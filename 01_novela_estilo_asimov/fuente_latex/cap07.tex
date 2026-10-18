@@ -1,0 +1,125 @@
+\chapter{La demostración}
+
+\inicio{A}{} las once en punto, el Consejo del Archivo volvió a reunirse en la sala de las paredes de cristal fundido. Esta vez había más gente. Se había corrido la voz de que la doctora Calderón iba a desafiar al Gremio de la Llave, y en el Archivo de Ceres no ocurría nada tan emocionante desde la avería del ascensor de 2179.
+
+La caja de llaves seguía en el centro de la mesa. Inés no la miró. Pidió una pizarra, la consiguió tras alguna resistencia, y en veinte minutos explicó el talonario, el gesto único de arrancar, el procedimiento de cambiar un cartel y la recarga con salida temprana. Siete la ayudó con los ejemplos. Beto Arce, desde un rincón, asentía con tanto entusiasmo que en dos ocasiones la Directora le pidió que parara.
+
+Cuando terminó, Helga Sørensen guardó silencio un momento.
+
+---Es ingenioso ---dijo por fin---\nobreak. Lo reconozco. Pero el Gremio no adopta procedimientos ingeniosos, doctora; adopta procedimientos seguros. Toda su construcción descansa en una suposición: que el talonario nunca baja de cero. Si baja una sola vez, el mecanismo da la vuelta, el cartel se llena de tickets fantasma y estamos peor que antes, porque al menos antes el fallo era raro. Usted me ha enseñado ejemplos con cuatro lectores. El Archivo tiene sesenta y cinco mil. ¿Puede demostrarme que, con sesenta y cinco mil lectores intercalándose de todas las formas posibles, el talonario nunca baja de cero?
+
+---Sí ---dijo Inés.
+
+---¿Sin ejemplos?
+
+---Sin ejemplos. Los ejemplos convencen; las demostraciones obligan. ---Borró la pizarra---\nobreak. Necesito dos definiciones y dos afirmaciones. Las definiciones son gratis. Las afirmaciones se las demuestro.
+
+\escena
+---Primera definición ---dijo Inés, y la escribió---\nobreak. Un lector comete una \emph{ofensa} si arranca un ticket cuando el talonario tiene $P$ tickets o menos. Es decir: si mete la mano en la zona roja. Quien comete una ofensa queda, por el procedimiento, obligado a recargar antes de marcharse.
+
+---Una palabra fuerte para algo tan pequeño ---comentó la Directora.
+
+---Es una palabra de abogado, y la demostración es un juicio. Segunda definición: llamemos $O$ a la lista de ofensores desde la última vez que el talonario estuvo por encima de la zona roja. Cada vez que alguien ofende, se añade a $O$. Cada vez que alguien pone el talonario por encima de $P$ ---sea cambiando el cartel, sea recargando con éxito---\nobreak, $O$ se vacía.
+
+---¿Una lista con repetidos? ---preguntó Loew, que esa mañana estaba sorprendentemente despierto---\nobreak. ¿Puede aparecer el mismo lector dos veces?
+
+---En principio sí, y por eso los matemáticos la llamarían un \emph{multiconjunto}: una bolsa en la que caben bolas repetidas. Pero precisamente lo primero que voy a demostrar es que eso no ocurre.
+
+Escribió en la pizarra:
+
+\begin{pizarra}
+\textsc{Afirmación 1.} Ningún lector está en $O$ más de una vez.
+
+\smallskip
+\textsc{Afirmación 2.} En todo momento, los tickets del talonario son al menos $P - |O|$, donde $|O|$ es el número de elementos de $O$.
+\end{pizarra}
+
+---Si las dos son ciertas ---dijo---\nobreak, el resto es aritmética de escuela. Hay como mucho $P$ lectores. Por la primera, cada uno está en $O$ como mucho una vez, así que $|O|$ no pasa de $P$. Por la segunda, el talonario es al menos $P - |O|$, que es al menos $P - P$, que es cero. El talonario nunca es negativo.
+
+Hubo un silencio en la sala. Mendieta, que no había entendido nada desde la palabra «multiconjunto», tuvo sin embargo la impresión de que algo importante acababa de pasar.
+
+---Demuestre la primera ---dijo la Directora.
+
+\escena
+---Un lector entra en $O$ por una sola vía: ofendiendo, es decir, arrancando un ticket en la zona roja. Y nadie más que él puede meterlo en $O$: es su propia acción. ---Inés trazó una flecha---\nobreak. Cuando ofende, su lectura no termina: tiene que recargar. Así que, antes de poder ofender otra vez, tiene que terminar su recarga. La pregunta es: ¿puede terminar su recarga sin que $O$ se haya vaciado?
+
+---Veamos ---siguió---\nobreak. Hay tres formas de salir de la recarga. Una: su cotejo funcionó. Entonces él mismo puso el talonario por encima de $P$, por R-1, y $O$ se vació. Dos: vio otro cristal en el cartel. Entonces alguien cambió el cartel, el nuevo talonario tiene $C$ tickets, más que $P$, y $O$ se vació. Tres: vio más tickets de los que esperaba. Entonces, por R-2, el talonario saltó por encima de $P$ en algún momento, y $O$ se vació.
+
+---En los tres casos ---dijo Siete, desde su sitio---\nobreak, entre dos ofensas del mismo lector siempre hay un vaciado de $O$.
+
+---Por tanto, nadie está dos veces. Primera afirmación demostrada.
+
+La Directora no dijo nada. Inés lo tomó como un permiso para seguir.
+
+---Segunda. Miremos lo que ocurre desde el último vaciado de $O$. Justo después del vaciado, el talonario está por encima de $P$ y $O$ está vacío: los tickets son más que $P - 0$. Se cumple. Desde entonces, ¿cómo puede haber cambiado el talonario? Por R-2, solo bajando de uno en uno; porque si hubiera subido, habría saltado por encima de $P$, y $O$ se habría vaciado otra vez, y estaríamos mirando desde un vaciado posterior.
+
+Dibujó una escalera descendente.
+
+---Cada bajada es un ticket arrancado. Las bajadas que ocurren por encima de $P$ dejan el talonario en $P$ o más: no estropean nada. Y cada bajada que ocurre desde $P$ o menos es, por definición, una ofensa: baja el talonario en uno y suma uno a $|O|$. Así que el talonario está, como mucho, $|O|$ escalones por debajo de $P$. Es decir: los tickets son al menos $P - |O|$. Segunda afirmación demostrada.
+
+Dejó la tiza sobre la mesa.
+
+---Y con las dos, el talonario nunca es negativo. Con cuatro lectores o con sesenta y cinco mil, se intercalen como se intercalen.
+
+\escena
+Fue Loew quien rompió el silencio, con una risa suave.
+
+---Ahora entiendo por qué la zona roja empieza en $P$ y no en cero ---dijo---\nobreak. Es el colchón exacto. En el peor caso, todos los lectores del Archivo ofenden a la vez, cada uno una sola vez, antes de que ninguna recarga termine. Y el colchón de $P$ tickets aguanta exactamente eso. Ni uno más, ni uno menos.
+
+---Exacto, profesor. En los ensayos de esta mañana, con cuatro lectores, el talonario llegó a cero una vez: los cuatro habían ofendido a la vez. Tocó la cota sin cruzarla. La demostración no solo es correcta; es ajustada.
+
+---Doctora ---dijo Siete, y había en su voz un temblor que Inés no le conocía---\nobreak, me he dado cuenta de algo mientras usted hablaba. Todos los lectores que están en $O$ están, en ese momento, a mitad de una recarga, porque quien ofende no se va sin recargar. Y por la segunda afirmación, el talonario solo puede estar por debajo de $P$ si $O$ no está vacío. Por tanto\ldots
+
+---Dilo.
+
+---Por tanto, si el talonario está en zona roja, \emph{siempre hay alguien recargándolo}. No puede existir un momento en que el talonario esté bajo y nadie se ocupe de él.
+
+Inés lo miró un momento largo.
+
+---Eso no lo había pensado yo ---dijo---\nobreak. Apúntatelo. Es tuyo.
+
+Siete no contestó, pero Beto aseguró después que se le iluminaron los ojos un tono más de lo reglamentario.
+
+\escena
+---Muy bien ---dijo la Directora, que no había cambiado de expresión en todo el rato---\nobreak. El talonario no baja de cero. Ahora hábleme del coste. ¿Cuánto tarda un lector en leer un cartel?
+
+---Casi siempre, un gesto ---dijo Inés---\nobreak. Arranca su ticket y se va. Solo si deja el talonario en zona roja tiene que recargar, y la recarga, como Siete demostró esta mañana, cuesta como mucho $P$ intentos de cotejo. Y no siempre es el mismo lector: cada vuelta de más en la recarga de alguien requiere que otro lector ofenda en ese mismo cartel, y cada lector solo puede ofender una vez. Si solo tres robots usan un cartel, la recarga cuesta como mucho unos tres intentos, aunque el Archivo tenga sesenta mil.
+
+---¿Y con qué frecuencia hay que recargar?
+
+---Con un talonario de diecinueve casillas, podemos cargar del orden de medio millón de tickets. Tras una recarga, el talonario queda casi lleno, y no vuelve a hacer falta recargar hasta bajar de sesenta y cinco mil. Del orden de cuatrocientas cincuenta y ocho mil lecturas entre recargas. Dos de cada millón de lecturas recargan. Las demás son un solo gesto.
+
+---¿Y cambiar el cartel?
+
+---Tres gestos: apuntar en el nuevo, trocar, restar en el viejo. Siempre tres, haya cuantos lectores haya. Sin esperas.
+
+La Directora tamborileó con los dedos sobre la caja de llaves.
+
+---Ha dicho usted «sesenta y cinco mil lectores como máximo» varias veces. ¿Qué pasa si hay más?
+
+Inés no esquivó la pregunta.
+
+---Entonces la demostración deja de valer. Si más de $P$ lectores usan a la vez el mismo cartel, $|O|$ podría superar a $P$, el talonario podría bajar de cero y tendríamos tickets fantasma. Es un requisito estricto, Directora, no una recomendación. El censo del Archivo tiene que garantizar que nunca hay más de $P$ lectores. Por suerte, el censo es la única cosa en Ceres que el Gremio controla mejor que las llaves.
+
+Hubo alguna risa en la sala. La Directora no se rio, pero la comisura de su boca se movió un milímetro.
+
+\escena
+---Una última cosa ---dijo Loew, levantando un dedo---\nobreak. Querida, lo que usted ha hecho se parece muchísimo al contador partido de las colonias exteriores.
+
+---Es el contador partido, profesor ---dijo Inés, sin dudarlo---\nobreak. Visto desde el otro lado. Ellos ponen en el cartel un contador que empieza en cero y sube con cada lector, y al final, cuando el cartel cambia, pasan ese contador a la hoja. Yo pongo un talonario que empieza lleno y baja con cada lector, y la hoja lo tiene apuntado desde el principio. En todo momento, mis tickets son exactamente $C$ menos su contador. Es la misma cuenta. La mía se paga por adelantado y la suya a plazos.
+
+---Entonces, ¿qué ha inventado usted?
+
+---Dos cosas pequeñas. Una forma de explicarlo en la que se ve de un vistazo que la hoja siempre va por arriba. Y la salida temprana: irse en cuanto se sabe que otro ya recargó. Los de las colonias solo se van si su propio cotejo funciona, o si ven el talonario alto. Por eso son la puerta giratoria. La salida temprana es lo que convierte la puerta giratoria en una puerta con turno.
+
+---Dos cosas pequeñas ---repitió Loew, con una sonrisa---\nobreak. La historia de la ciencia está hecha de cosas pequeñas que nadie vio a tiempo.
+
+La Directora Sørensen se puso de pie. Durante un momento, todos en la sala pensaron que iba a abrir la caja de llaves. En vez de eso, la cerró.
+
+---La demostración me convence, doctora ---dijo---\nobreak. Pero yo no dirijo un aula. Dirijo un Archivo. Quiero ver su método funcionando con muchos lectores de verdad, contra la llave, contra el contador partido y contra los demás remedios que tenemos. En el Cerebro, a toda velocidad, millones de veces. Y si gana, el Gremio lo adoptará.
+
+---¿Y si pierde?
+
+---Si pierde, colgará usted misma la primera llave en el cartel del muelle doce. Lo prometió ayer.
+
+---Lo prometí ---dijo Inés---\nobreak. Siete, avisa al Cerebro. Esta noche no vamos a dormir tampoco.

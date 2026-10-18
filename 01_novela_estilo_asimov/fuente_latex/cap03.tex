@@ -1,0 +1,120 @@
+\chapter{Candados, épocas y otros remedios}
+
+\inicio{E}{l} Consejo del Archivo se reunía en una sala ovalada con las paredes forradas de cristales fundidos, que era la forma que tenían los fundadores de recordar a sus sucesores que nada es para siempre. A Inés siempre le había parecido un detalle de mal gusto.
+
+Helga Sørensen presidía la mesa. Era una mujer alta, de pelo blanco cortado a cepillo, que llevaba colgada al cuello una llave de bronce del tamaño de una mano: la insignia del Gremio de la Llave, la cofradía de archiveros que, desde hacía tres generaciones, custodiaba los procedimientos del Archivo.
+
+---Doctora Calderón ---dijo, cuando todos estuvieron sentados---\nobreak. El comisionado Mendieta me ha resumido sus conclusiones. Le agradezco que haya exonerado al señor Arce. Y le agradezco aún más que haya identificado el fallo, porque eso nos permite corregirlo de inmediato.
+
+Hizo una seña y un archivero joven depositó sobre la mesa una caja de madera. Dentro había doscientas llaves pequeñas, todas iguales.
+
+---Una por cartel ---explicó la Directora---\nobreak. A partir de mañana, quien quiera leer o cambiar un cartel deberá tomar antes su llave, y no la soltará hasta haberse apuntado en la hoja. Mientras tenga la llave, nadie más podrá tocar ese cartel. La ventana desaparece. Es sencillo, es seguro y el Gremio lleva años proponiéndolo.
+
+Hubo murmullos de aprobación. Inés esperó a que se apagaran.
+
+---Es sencillo y es seguro ---dijo---\nobreak. Y dentro de un mes tendrá usted naves esperando en órbita a que un robot suelte una llave.
+
+---Los robots no se distraen, doctora.
+
+---Los robots se averían, Directora. Se quedan sin energía, reciben órdenes más urgentes, se detienen para cumplir otra regla. Si el que tiene la llave del cartel del muelle doce se detiene a mitad de camino, nadie en todo el Cinturón podrá aproximarse al muelle doce hasta que alguien vaya a buscarlo. Y aunque nadie se averíe: con la llave, solo puede leer el cartel una persona a la vez. Hoy, cuarenta robots leen ese cartel en el mismo segundo sin molestarse. Con su llave, harán cola. Y una cola de cuarenta, con cada uno caminando tres kilómetros hasta su nicho y volviendo para devolver la llave\ldots
+
+---Exagera.
+
+---Calcule. ---Inés empujó hacia ella una hoja con números---\nobreak. Con la llave, cada lectura cuesta lo mismo que antes cuando no hay nadie más. Pero en cuanto dos lectores coinciden, el segundo espera al primero entero. Y en el Archivo coinciden siempre. Su llave cumple la Primera Regla rompiendo la Segunda.
+
+La Directora apretó la llave de bronce entre los dedos.
+
+---Entonces propóngame algo mejor.
+
+---Para eso he venido. Pero antes quiero saber qué se ha intentado, para no repetirlo. ---Inés se volvió hacia el extremo de la mesa---\nobreak. Profesor Loew, ¿está usted despierto?
+
+\escena
+Emeric Loew tenía, según las malas lenguas, ciento doce años, y había pasado al menos sesenta de ellos dormido en reuniones del Consejo. Abrió un ojo.
+
+---Siempre estoy despierto cuando alguien me necesita, querida. Simplemente, rara vez me necesitan. ---Abrió el otro ojo---\nobreak. Quiere usted la historia de la carrera del cartel. Es una historia larga y bastante triste. ¿Por dónde empiezo?
+
+---Por el principio.
+
+---El principio está en la Tierra, mucho antes de que nadie pusiera un pie en Ceres. Los antiguos tenían máquinas pensantes con muchas mentes trabajando a la vez sobre la misma memoria, y esas máquinas tenían exactamente nuestro problema. Ellos lo llamaban la \emph{carrera read-reclaim}: una lectura que compite con una liberación. Lo describieron, lo sufrieron y escribieron tratados sobre cómo evitarlo. Nuestros fundadores conocían esos tratados. Algunos están en la sección terrestre de la Bóveda.
+
+Juntó las yemas de los dedos, como hacía siempre que iba a dar una lección.
+
+---Hay, a grandes rasgos, cuatro familias de remedios. La primera es la de la Directora: candados. Funcionan, pero tienen el defecto que la doctora ha señalado. Los antiguos lo sabían. Por eso buscaron algoritmos que llamaban \emph{lock-free}, libres de candados, y luego otros, más exigentes, que llamaban \emph{wait-free}, libres de esperas.
+
+---Explíquelo para el comisionado ---pidió Inés.
+
+Mendieta, que estaba sentado al fondo, frunció el ceño, pero no protestó.
+
+---Imagine una puerta, comisionado. Con un candado, si quien está dentro se desmaya, nadie más entra. Eso es un algoritmo \emph{bloqueante}. Ahora imagine una puerta giratoria a la que se agolpa una multitud. Siempre pasa alguien; el sistema nunca se atasca. Pero usted, en concreto, podría quedarse dando vueltas toda la tarde, porque cada vez que le toca empujar, otro se le adelanta. Eso es \emph{lock-free}: alguien siempre avanza, pero nadie le garantiza que sea usted. Y por último imagine una puerta con turno: cualquiera que llegue, pase lo que pase con los demás, cruza en un número limitado de pasos. Eso es \emph{wait-free}. Es lo que pide nuestra Segunda Regla: \emph{ningún lector esperará sin término}. Los fundadores eran exigentes.
+
+---Demasiado exigentes ---murmuró la Directora.
+
+---Quizá. ---Loew sonrió---\nobreak. La segunda familia de remedios es la del almacén propio. Dos sabios terrestres llamados Michael y Scott, corrigiendo a otro llamado Valois, construyeron el primer conteo sin candados. Pero tenía una condición: los cristales fundidos no se devolvían nunca a la Bóveda común. Se guardaban en un almacén privado y solo se reutilizaban como cristales del mismo tipo. Así, si un lector rezagado llegaba a un nicho viejo, encontraba otro cristal de su misma clase, y el algoritmo podía darse cuenta del error y corregirlo.
+
+---La Bóveda se partiría en mil almacenes que nunca se vacían ---dijo Siete, desde la pared donde se había quedado de pie.
+
+---Exacto, joven. Un precio alto. La tercera familia es la de la mano de dos brazos. Un grupo de sabios ---Detlefs, Martin, Moir y Steele--- encontró una solución general y elegante. Pero necesitaba un gesto que leyera un cartel y modificara una hoja a la vez, aunque estuvieran en sitios distintos. Lo llamaban DCAS. En su época no existía en ninguna máquina, y sigue sin existir hoy.
+
+---Una solución para un universo que no es el nuestro ---dijo Inés.
+
+---La mejor clase de solución, si uno es teórico. ---Loew carraspeó---\nobreak. Y la cuarta familia es la más popular, y la que más debería interesarle, Directora, porque es la que propondrán sus archiveros jóvenes cuando la llave fracase. Es la familia de la basura diferida.
+
+\escena
+---Los antiguos tenían varios nombres para ella ---siguió el profesor---\nobreak. Uno se llamaba \emph{hazard pointers}: cada lector tenía en la pared una casilla pública donde escribía «estoy usando este cristal». Antes de fundir algo, el fundidor miraba todas las casillas. Si alguien lo anunciaba, el cristal esperaba en una lista de pendientes y se intentaba fundir más tarde.
+
+---Un cartel de «ocupado» en cada puerta ---dijo Beto Arce, que asistía desde un rincón como testigo.
+
+---Eso mismo. Otro se llamaba \emph{épocas}: el Archivo cuenta turnos, cada lector anuncia en qué turno entra, y lo que se retira en un turno se funde cuando todos los que trabajaban en ese turno se han ido. Y el más refinado, de tres sabios llamados Anderson, Blelloch y Wei, combinaba estas técnicas con las hojas de usuarios: retrasaba las restas en las hojas hasta que fuera seguro hacerlas.
+
+---¿Y qué tienen de malo? ---preguntó Mendieta---\nobreak. Si el fundidor espera a que nadie esté mirando, el problema se acaba.
+
+---Se acaba ---dijo Inés---\nobreak, y se cambia por otro. La Bóveda empieza a acumular cristales que nadie lee pero que todavía no se pueden fundir. En los buenos días, unos pocos. En los malos, muchos. Y la Bóveda es finita.
+
+---Rompe la Tercera Regla ---dijo Siete.
+
+---Y algo más ---añadió Inés---\nobreak. Pregúntele a los copistas, Directora.
+
+La Directora la miró sin entender. Fue Loew quien respondió.
+
+---Los copistas, sí. Excelente observación. En el Archivo hay una costumbre muy antigua: cuando un copista va a modificar un documento, mira la hoja del cristal. Si marca uno, sabe que él es el único usuario, así que puede escribir directamente sobre el cristal en vez de grabar una copia nueva. Ahorramos así la mitad de los cristales del Archivo. Los antiguos llamaban a eso \emph{actualización en el sitio}, y tenían lenguajes enteros construidos para aprovecharla; uno se llamaba Koka, si no recuerdo mal.
+
+---Y si las restas en las hojas se retrasan ---terminó Inés---\nobreak, una hoja puede marcar dos aunque solo quede un usuario de verdad. El copista no se atreve a escribir encima, y graba una copia. Con la basura diferida, la Bóveda se llena por dos lados: por los cristales que esperan para fundirse y por las copias que antes no hacían falta. La única forma de que una hoja diga la verdad es fundir los cristales en cuanto llegan a cero. Ni antes, ni después.
+
+\escena
+Hubo un silencio. Lo rompió Siete.
+
+---Profesor, ¿no hubo nadie que consiguiera cumplir las tres Reglas a la vez?
+
+Loew se quedó pensando, con los ojos medio cerrados.
+
+---Hubo uno ---dijo---\nobreak. Un sabio llamado Sundell consiguió un método sin esperas, sin candados y sin basura. Pero cada vez que un archivero cambiaba un cartel con éxito, tenía que recorrer el Archivo entero, robot por robot, para asegurarse de que ninguno estaba a mitad de camino. Cuantos más robots hubiera, más tardaba el cambio. Siempre. No solo en el peor caso: siempre. Con sesenta y cinco mil lectores en el censo, cambiar un cartel llevaría una semana. Y su método solo permitía leer y cotejar; ni siquiera dejaba escribir un cartel sin más.
+
+---¿Y nada más?
+
+---Hay una técnica más ---dijo Loew, tras una pausa---\nobreak, que se usa en las colonias exteriores. La llaman \emph{el contador partido}. Junto al número del nicho, el cartel lleva un pequeño contador de cuántos lectores han pasado por él, y la cuenta se ajusta al final, cuando el cartel cambia. Funciona razonablemente bien. Pero tiene fama de difícil de entender, y no está libre de esperas: un lector con mala suerte puede quedarse reintentando para siempre. Cumple la Primera y la Tercera, pero la Segunda solo a medias. Es la puerta giratoria, no la del turno.
+
+Inés, que había estado garabateando en su libreta, levantó la cabeza de golpe.
+
+---¿Un contador \emph{junto} al número del nicho? ¿En el mismo cartel?
+
+---En el mismo cartel, querida. Es lo único que tiene de ingenioso.
+
+Inés no contestó. Miraba hacia la pared del fondo, donde a través de una ventana interior se veía un trozo del Gran Salón y, en él, una hilera de carteles con sus sesenta y cuatro casillas. Las dieciséis de la izquierda, apagadas en todos.
+
+---Doctora ---dijo la Directora---\nobreak, ¿nos va a decir qué propone, o vamos a votar la llave?
+
+Inés se puso de pie y recogió sus cosas.
+
+---Deme hasta mañana a esta hora. Si para entonces no le traigo algo que cumpla las tres Reglas, vote usted la llave, y yo misma la colgaré en el cartel del muelle doce.
+
+---¿Por qué hasta mañana?
+
+---Porque creo que la respuesta está en una idea que inventaron dos ingenieros terrestres para mandar cartas entre planetas ---dijo Inés, ya en la puerta---\nobreak, y necesito una noche para comprobar que no estoy diciendo una tontería. Siete, ven conmigo. Profesor Loew, gracias. Ha sido usted más útil que todo el Gremio junto.
+
+La puerta se cerró detrás de ella. La Directora Sørensen miró la caja de llaves, luego la puerta, luego a Loew.
+
+---¿Cartas entre planetas? ¿De qué está hablando?
+
+El viejo profesor ya había vuelto a cerrar los ojos, pero sonreía.
+
+---Si no me equivoco, Directora ---dijo---\nobreak, está hablando de \emph{pesos}.

@@ -1,0 +1,147 @@
+\chapter{Nota final: lo real y lo inventado}
+\markboth{Lo real y lo inventado}{Lo real y lo inventado}
+
+\inicio{T}{odo} lo que ocurre en Ceres es inventado: el Archivo, la Bóveda, la \emph{Perséfone}, Inés Calderón, Siete y el resto de los personajes. Las Tres Reglas del Archivo son un homenaje a la manera en que los viejos maestros de la ciencia ficción convertían un problema técnico en un dilema entre leyes; no aparecen en ningún paper.
+
+Lo que no es inventado:
+
+\begin{itemize}
+\item \textbf{El problema.} La carrera \emph{read-reclaim} existe en el conteo de referencias concurrente, y el \emph{use-after-free} que provoca es una causa habitual de vulnerabilidades.
+\item \textbf{La solución.} El talonario es el \emph{peso} del paper de de Wolff, Anderson, Keller y Seletskiy (Euro-Par 2024). Los procedimientos de los capítulos IV a VI son, paso a paso, sus algoritmos 1 y 2. Los requisitos R-1 y R-2, la ofensa, el multiconjunto $O$ y las dos afirmaciones del capítulo VII son su demostración (secciones 4 y 4.1).
+\item \textbf{Las extensiones y los límites} del capítulo VIII están en la sección 5 del paper (punteros nulos, débiles, \emph{compare-and-swap} y punteros \emph{aliased}) o se derivan de él. Las observaciones sobre ARM, LA57, el orden de memoria y la ausencia de \emph{snapshot pointers} proceden en parte de la explicación detallada en la que se basa este libro.
+\item \textbf{Los ensayos del capítulo X} reproducen los resultados de la sección 6 del paper: pilas concurrentes en una máquina de 144 hilos y latencias en una de 56. Los valores de la tabla de pilas son lecturas aproximadas de su Figura 5; los de latencia, las medianas de su Figura 6.
+\item \textbf{El teatro y el ensayo de estrés del capítulo IX} no están en el paper: corresponden al simulador y al boceto en C++ de la explicación detallada, con sus resultados.
+\item \textbf{El trabajo previo} que recita el profesor Loew en el capítulo III es real: Valois; Michael y Scott; Detlefs, Martin, Moir y Steele; Herlihy, Luchangco, Martin y Moir; Gidenstam et al.; Sundell; Anderson, Blelloch y Wei; el \emph{split reference count} de Lee, Williams y Folly; Bevan y Watson y Watson para el conteo ponderado.
+\item \textbf{Y sí:} Daniel Anderson es a la vez coautor del paper y autor de la implementación rival que lleva su nombre en los experimentos.
+\end{itemize}
+
+\chapter{Apéndice A · Diccionario de Ceres}
+\markboth{Diccionario de Ceres}{Diccionario de Ceres}
+
+\noindent Cada objeto del Archivo, con su nombre en el paper y lo que es de verdad.
+
+\medskip
+{\small
+\begin{longtable}{@{}>{\itshape\raggedright}p{2.5cm} >{\raggedright}p{2.7cm} >{\raggedright\arraybackslash}p{5.4cm}@{}}
+\toprule
+\upshape\textbf{En Ceres} & \textbf{En el paper} & \textbf{Qué es} \\
+\midrule\endhead
+Bóveda & memoria (\emph{heap}) & donde viven los objetos \\
+nicho & dirección & número de una posición de memoria \\
+cristal & objeto & datos con contador de referencias \\
+hoja de usuarios & \emph{reference count} (rc) & entero junto al objeto \\
+fundidor & liberar (\emph{reclaim}) & devolver la memoria; puede reutilizarse \\
+cartel & \emph{atomic shared pointer} & celda mutable compartida \\
+ticket, pase & \emph{shared pointer} (peso 1) & referencia propia e inmutable \\
+talonario & peso (\emph{weight}) & bits altos del puntero empaquetado \\
+lector & hilo que hace \texttt{load} & hasta $P$ hilos \\
+archivero & hilo que hace \texttt{store} & escritor \\
+censo, $P$ & $P$ & número máximo de hilos \\
+talonario lleno, $C$ & $C$ & peso con que se carga; $C\geq 2P$ \\
+arrancar & \texttt{fetch\_and\_add} & suma y devuelve el valor anterior \\
+trocar & \texttt{exchange} / \emph{swap} & escribe y devuelve el anterior \\
+cotejar & \texttt{compare\_and\_swap} & cambia solo si coincide \\
+mano de dos brazos & DCAS & CAS sobre dos palabras separadas; no existe \\
+placa doble & CAS de 128 bits & sí existe, pero sin \texttt{fetch\_and\_add} \\
+zona roja & peso $\leq P$ & hay que recargar \\
+recargar & \texttt{increase\_weight} & algoritmo 2 \\
+ofensa & \emph{offence} & decrementar con peso $\leq P$ \\
+salida temprana & \emph{break} si el peso subió & lo que lo hace \emph{wait-free} \\
+llave & candado (\emph{lock}) & la versión de libstdc++ \\
+basura diferida & SMR, \emph{hazard pointers}, épocas & reclamación diferida \\
+vistazo & \emph{snapshot pointer} & lectura sin tocar el contador \\
+contador partido & \emph{split reference count} & peso $= C -$ contador local \\
+cita & puntero \emph{aliased} & comparte contador, apunta a otra cosa \\
+copista en el sitio & actualización destructiva & reutilizar si rc $=1$ \\
+cartel vacío & \texttt{null} & puntero nulo \\
+ficha débil & \emph{weak pointer} & referencia que no mantiene vivo \\
+Cerebro & la máquina de pruebas & 144 hilos (rendimiento), 56 (latencia) \\
+\bottomrule
+\end{longtable}
+}
+
+\chapter{Apéndice B · Los algoritmos, en el idioma de Inés}
+\markboth{Los algoritmos}{Los algoritmos}
+
+\noindent Versión en español de los algoritmos 1 y 2 del paper. \textit{empaquetar}$(p,w)$ junta nicho y talonario en una placa; \textit{desempaquetar} los separa. Un ticket vale $2^{48}$ porque el talonario vive en las casillas altas.
+
+\begin{pizarra}
+\ttfamily\footnotesize
+\textbf{cambiar}(cartel, nuevo):\\
+\hspace*{1.2em}hoja(nuevo) += C\\
+\hspace*{1.2em}v ← trocar(cartel, empaquetar(nuevo, C))\\
+\hspace*{1.2em}(viejo, w) ← desempaquetar(v)\\
+\hspace*{1.2em}hoja(viejo) -= w \quad\textrm{\itshape // si llega a 0, al fundidor}\\[2mm]
+\textbf{leer}(cartel):\\
+\hspace*{1.2em}v ← arrancar(cartel, -empaquetar(nulo, 1))\\
+\hspace*{1.2em}(p, w) ← desempaquetar(v) \quad\textrm{\itshape // v = valor anterior}\\
+\hspace*{1.2em}si w - 1 < P: recargar(cartel, p, w - 1)\\
+\hspace*{1.2em}devolver ticket(p) \quad\textrm{\itshape // ya apuntado en la hoja}
+\end{pizarra}
+
+\begin{pizarra}
+\ttfamily\footnotesize
+\textbf{recargar}(cartel, p, w):\\
+\hspace*{1.2em}hoja(p) += C - w \quad\textrm{\itshape // reservar ANTES de cotejar}\\
+\hspace*{1.2em}esperado ← w\\
+\hspace*{1.2em}repetir:\\
+\hspace*{2.4em}r ← cotejar(cartel, empaquetar(p, esperado),\\
+\hspace*{8.4em}empaquetar(p, esperado + C - w))\\
+\hspace*{2.4em}si r.éxito: terminar\\
+\hspace*{2.4em}(p2, w2) ← desempaquetar(r.visto)\\
+\hspace*{2.4em}si p2 ≠ p o w2 > esperado: \textrm{\itshape // salida temprana}\\
+\hspace*{3.5999999999999996em}salir del bucle\\
+\hspace*{2.4em}esperado ← w2\\
+\hspace*{1.2em}hoja(p) -= C - w \quad\textrm{\itshape // devolver la reserva}
+\end{pizarra}
+
+\noindent\textbf{Cambiar con condiciones} (\emph{compare-and-set}, algoritmo 3, solo \emph{lock-free}): apuntar $C$ en el nuevo; leer el cartel; mientras el cristal visto sea el esperado, cotejar «(visto, tickets vistos) $\to$ (nuevo, $C$)»; si acepta, restar en el viejo los tickets vistos y responder sí; si el cristal visto es otro, devolver los $C$ del nuevo y responder no; si solo cambiaron los tickets, reintentar.
+
+\chapter{Apéndice C · Las cuentas de la pizarra}
+\markboth{Las cuentas}{Las cuentas}
+
+\begin{description}[leftmargin=0pt,itemsep=2mm,font=\normalfont\scshape\color{oxido}]
+\item[La regla de la hoja] hoja $\geq$ talonario $+$ tickets fuera; igualdad cuando nadie está a mitad de un procedimiento.
+\item[R-1] $C \geq 2P$.
+\item[R-2] el talonario baja de uno en uno o salta por encima de $P$.
+\item[Por qué la recarga sale de la zona roja] $\text{actual} + C - w \;\geq\; 0 + 2P - (P-1) \;=\; P+1 \;>\; P$.
+\item[Afirmación 1] cada lector está en $O$ como mucho una vez $\Rightarrow |O| \leq P$.
+\item[Afirmación 2] talonario $\geq P - |O|$.
+\item[Conclusión] talonario $\geq P - P = 0$: nunca negativo.
+\item[Intentos de recarga] los valores esperados forman una cadena estrictamente decreciente, por debajo de $P$ y $\geq 0$: como mucho $P$ intentos.
+\item[Casillas] 16 libres $\Rightarrow C \leq 2^{16}-1 = 65\,535$; con 3 de alineación, 19 $\Rightarrow C \leq 2^{19}-1$. En los experimentos: $C = 2^{19}$, $P = 2^{16}$.
+\item[Lecturas entre recargas] $C - P = 524\,288 - 65\,536 = 458\,752$: unas dos recargas por millón de lecturas.
+\item[Hojas de 64 cifras] con hojas de 32 bits y $C=2^{19}$, bastan $2^{32}/2^{19} = 8\,192$ carteles para desbordar; con 64, harían falta $2^{45}$.
+\item[Contador partido] peso $= C -$ contador local. Efecto neto en la hoja tras un cambio: $+C - (C - \text{contador}) = +\text{contador}$.
+\item[Costes] leer: casi siempre 1 gesto, como mucho $O(P)$; cambiar y trocar: $O(1)$; cambiar con condiciones y citas: \emph{lock-free}.
+\end{description}
+
+\chapter{Apéndice D · Del paper a los capítulos}
+\markboth{Del paper a los capítulos}{Del paper a los capítulos}
+
+{\small
+\begin{tabularx}{\textwidth}{@{}l X l@{}}
+\toprule
+\textbf{Sección del paper} & \textbf{Idea} & \textbf{Capítulo} \\
+\midrule
+Resumen y §1 & el problema y por qué importa & Prólogo, I, II \\
+§2 Preliminares & interfaz; carreras \emph{read-reclaim}; SMR & II, III \\
+§3 Conteo ponderado & pesos; algoritmo 1; empaquetado & IV \\
+§4 Aumentar el peso & recarga; R-1, R-2; algoritmo 2 & V, VI \\
+§4.1--4.2 & demostración y coste & VII \\
+§5 Extensiones & nulos, débiles, CAS, \emph{aliasing} & VIII \\
+§6 Experimentos & pilas y latencias & X \\
+§7 Trabajo relacionado & historia; \emph{split reference count} & III, VII, Epílogo \\
+§8 Conclusión & wait-free sin reclamación diferida & X, Epílogo \\
+\bottomrule
+\end{tabularx}
+}
+
+\medskip
+\noindent\textbf{Referencia.} I.~G.~de Wolff, D.~Anderson, G.~K.~Keller, A.~Seletskiy. \emph{A Fast Wait-Free Solution to Read-Reclaim Races in Reference Counting}. Euro-Par 2024, LNCS 14803, pp.~103--118. Código y experimentos: Zenodo y GitHub (\texttt{ivogabe/wait-free-atomic-shared-pointer}).
+
+\vfill
+\begin{center}
+{\color{oxido}$\ast$}\\[2mm]
+{\small\itshape Fin}
+\end{center}

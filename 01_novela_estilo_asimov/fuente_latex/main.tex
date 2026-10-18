@@ -1,0 +1,109 @@
+\documentclass[11pt,openany,oneside]{book}
+\usepackage[paperwidth=148mm,paperheight=210mm,left=16mm,right=16mm,top=20mm,bottom=22mm,headsep=7mm,footskip=11mm]{geometry}
+\usepackage{fontspec}
+\usepackage{babel}
+\babelprovide[main,import]{spanish}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lettrine}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,arrows.meta,decorations.pathmorphing,decorations.pathreplacing,shadows}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage[titles]{tocloft}
+\setlength{\cftchapnumwidth}{2.6em}
+\usepackage{etoolbox}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={La Primera Regla del Archivo},pdfsubject={Novela corta inspirada en de Wolff, Anderson, Keller y Seletskiy (Euro-Par 2024)},pdflang=es}
+
+\setmainfont{TeX Gyre Pagella}
+\newfontfamily\titlefont{TeX Gyre Pagella}
+\newfontfamily\monofont{DejaVu Sans Mono}[Scale=0.80]
+\setmonofont{DejaVu Sans Mono}[Scale=0.80]
+
+\definecolor{tinta}{HTML}{1F2430}
+\definecolor{oxido}{HTML}{9A3B26}
+\definecolor{ceres}{HTML}{3D5A6C}
+\definecolor{papel}{HTML}{F6F1E7}
+\definecolor{gris}{HTML}{6B6B6B}
+\color{tinta}
+
+\linespread{1.08}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\hyphenpenalty=300
+
+% ----- Capítulos -----
+\titleformat{\chapter}[display]
+  {\centering\titlefont}
+  {\vspace*{8mm}{\color{oxido}\small\scshape\addfontfeature{LetterSpace=18}\chaptertitlename\ \thechapter}}
+  {4mm}
+  {\color{tinta}\LARGE\itshape}
+  [\vspace{3mm}{\color{oxido}\rule{18mm}{0.4pt}}]
+\titleformat{name=\chapter,numberless}[display]
+  {\centering\titlefont}
+  {}
+  {0mm}
+  {\vspace*{8mm}\color{tinta}\LARGE\itshape}
+  [\vspace{3mm}{\color{oxido}\rule{18mm}{0.4pt}}]
+\titlespacing*{\chapter}{0pt}{0pt}{12mm}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\AtBeginDocument{\renewcommand{\chaptername}{Capítulo}\renewcommand{\contentsname}{Índice}\renewcommand{\appendixname}{Apéndice}}
+
+\titleformat{\section}{\centering\titlefont\large\itshape}{}{0pt}{}
+\titlespacing*{\section}{0pt}{6mm}{4mm}
+
+% ----- Cabeceras -----
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\small\color{gris}\scshape La Primera Regla del Archivo}
+\fancyhead[R]{\small\color{gris}\itshape\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\color{gris}\thepage}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{gris}\thepage}}
+
+% ----- Utilidades -----
+\newcommand{\escena}{\par\vspace{3mm}{\centering\color{oxido}$\ast$\quad$\ast$\quad$\ast$\par}\vspace{3mm}\noindent}
+\newcommand{\inicio}[2]{\lettrine[lines=3,lhang=0.05,nindent=0.2em,findent=0.15em]{\color{oxido}#1}{#2}}
+\newcommand{\cartel}[1]{{\monofont #1}}
+
+\newtcolorbox{documento}[1][]{enhanced,breakable,colback=papel,colframe=ceres!60,boxrule=0.4pt,arc=1pt,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,fontupper=\small,before skip=4mm,after skip=4mm,
+  title={#1},coltitle=papel,colbacktitle=ceres,fonttitle=\small\scshape,attach title to upper={},
+  detach title,before upper={\ifstrempty{#1}{}{\noindent{\color{ceres}\scshape\small #1}\par\smallskip}}}
+
+\newtcolorbox{pizarra}{enhanced,breakable,colback=ceres!8,colframe=ceres!8,boxrule=0pt,arc=0pt,
+  left=4mm,right=4mm,top=2mm,bottom=2mm,fontupper=\small,before skip=4mm,after skip=4mm,
+  borderline west={1.2pt}{0pt}{ceres}}
+
+\setlist{itemsep=1pt,topsep=3pt,leftmargin=1.4em}
+
+\begin{document}
+\frontmatter
+\input{portada}
+\input{preliminares}
+\tableofcontents
+\input{prologo}
+\mainmatter
+\input{cap01}
+\input{cap02}
+\input{cap03}
+\input{cap04}
+\input{cap05}
+\input{cap06}
+\input{cap07}
+\input{cap08}
+\input{cap09}
+\input{cap10}
+\backmatter
+\input{epilogo}
+\input{apendices}
+\end{document}

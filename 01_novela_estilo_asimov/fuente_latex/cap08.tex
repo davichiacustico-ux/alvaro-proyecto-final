@@ -1,0 +1,124 @@
+\chapter{Lo que no se puede tener}
+
+\inicio{E}{l} Cerebro del Archivo ocupaba una gruta entera bajo la Bóveda, y era, en cierto sentido, una segunda Bóveda: los fundadores lo habían construido con las mismas reglas que el Archivo, solo que a una escala tan pequeña y tan rápida que lo que en la Bóveda tardaba minutos, en el Cerebro tardaba millonésimas de segundo. Dentro del Cerebro había carteles, nichos, hojas y lectores, igual que arriba; solo que nadie podía verlos, salvo a través de las pantallas de la sala de control.
+
+---Es como si el Archivo tuviera un sueño de sí mismo ---dijo Beto, que nunca había bajado.
+
+---Es al revés ---dijo Inés---\nobreak. El Archivo es el sueño. Los fundadores eran programadores. Construyeron la Bóveda a imagen de la memoria de una máquina, con robots en lugar de hilos y cristales en lugar de objetos. Por eso nuestro problema era el problema de los antiguos. Y por eso, si la solución funciona ahí abajo, funcionará aquí arriba.
+
+Mientras los técnicos preparaban los ensayos, que llevarían horas, la sala de control se fue llenando de visitantes con preguntas. Inés las fue contestando una por una, sentada en un taburete, con una taza de café que se le enfrió sin que la tocara. Siete tomó notas. Más tarde las ordenaría bajo el título que Inés le dictó: \emph{Lo que se puede tener y lo que no}.
+
+\escena
+La primera pregunta la hizo Beto.
+
+---Doctora, hay carteles que a veces no anuncian nada. Cuando un documento se retira, el cartel se queda vacío: todas sus casillas a cero. ¿Qué pasa si un lector arranca un ticket de un cartel vacío?
+
+---Arranca un ticket de nada, porque no sabe de antemano que está vacío. Y el talonario, que estaba a cero, da la vuelta. ---Inés hizo la cuenta en un papel---\nobreak. Pero mira dónde: el talonario está en las casillas de la izquierda. Al restar, la cuenta que da la vuelta se sale por el borde izquierdo de la placa y se pierde. Las cuarenta y ocho casillas del nicho siguen a cero. El cartel sigue vacío, solo que con un talonario absurdo que no respalda nada porque no hay nada que respaldar. Nadie apunta en ninguna hoja, nadie recarga, nadie sufre.
+
+---¿Y si el talonario estuviera a la derecha?
+
+---Entonces la resta pediría prestado a las casillas del nicho, y el cartel vacío pasaría a anunciar un nicho inventado. Por eso el talonario va a la izquierda, Beto. No es estética.
+
+\escena
+La segunda pregunta vino de una archivera del departamento de catálogos, una mujer joven con gafas, que se presentó como Lucía.
+
+---En los catálogos usamos fichas que apuntan a cristales pero que no los mantienen vivos ---dijo---\nobreak. Si el cristal se funde, la ficha simplemente deja de funcionar. Las llamamos \emph{fichas débiles}. ¿Su método sirve para ellas?
+
+---Las fichas débiles tienen su propia hoja, la de usuarios débiles, y tienen exactamente el mismo problema cuando se guardan en un cartel que cambia: leer la ficha del cartel y apuntarse en su hoja son dos gestos. Así que se resuelve igual: con un talonario. Son dos asuntos independientes, Lucía. Lo que sirve para los fuertes sirve para los débiles, y hay trabajos antiguos que demuestran que las demás operaciones con fichas débiles también se pueden hacer sin esperas.
+
+\escena
+La tercera pregunta la hizo la propia Directora Sørensen, que había bajado sin avisar y llevaba un rato escuchando desde la puerta.
+
+---Los copistas ---dijo--- no se limitan a cambiar carteles. A veces necesitan cambiarlos \emph{solo si} siguen anunciando cierto cristal. «Si el cartel de la carta del muelle doce sigue diciendo A, cámbialo por B; si alguien ya lo cambió, no toques nada.» ¿Puede hacerse eso sin esperas?
+
+Inés tardó en contestar, lo cual fue notado por todos.
+
+---Puede hacerse ---dijo---\nobreak. Sin esperas, no.
+
+---Explíquese.
+
+---El copista quiere cotejar el cartel: «si dice A, pon B». Pero el mecanismo coteja la placa entera, nicho y talonario juntos. El copista mira el cartel: «A, con mil tickets». Prepara su cotejo: «si dice A con mil, pon B con un talonario lleno». Y antes de que lo ejecute, un lector arranca un ticket. Ahora dice «A con novecientos noventa y nueve». El cristal es el correcto, pero el cotejo falla.
+
+---Y lo repite con novecientos noventa y nueve.
+
+---Y otro lector se le adelanta. Con un flujo continuo de lectores, el copista puede fallar indefinidamente, aunque el cristal sea siempre el que esperaba. Cada fallo se debe a que otro avanzó, así que el sistema progresa. Es \emph{lock-free}. Pero no \emph{wait-free}. Es la puerta giratoria otra vez, y esta vez no tengo una salida temprana que ofrecerle.
+
+---Entonces su método no cumple la Segunda Regla.
+
+---Para leer, para cambiar un cartel sin condiciones y para cambiarlo quedándose con el viejo, la cumple. Para cambiarlo con condiciones, no. No le voy a mentir, Directora. Cuando haya muchos copistas cotejando a la vez el mismo cartel y muchos lectores arrancando de él, los copistas reintentarán mucho. Es el punto débil del método, y si en los ensayos de esta noche algún rival gana en algo, será ahí.
+
+La Directora la miró con algo que, en otra persona, podría haber sido respeto.
+
+---Es la primera vez en veinte años que alguien me presenta una propuesta y me dice dónde va a fallar antes de que yo lo descubra.
+
+---Es más barato que esperar a que lo descubra usted.
+
+\escena
+Siete levantó la mano, gesto que había aprendido de los estudiantes del Instituto aquella misma semana.
+
+---Doctora, existe otro tipo de pase. Las \emph{citas}. Un pase que mantiene vivo un cristal entero pero que apunta a un capítulo concreto dentro de él. Por ejemplo, un pase a la tabla de mareas de una carta orbital: mientras exista, la carta entera no se funde. Una cita necesita dos números: el nicho del cristal, que es el que tiene la hoja, y la posición del capítulo.
+
+---Y dos números de cuarenta y ocho cifras más un talonario no caben en una placa de sesenta y cuatro casillas ---dijo Inés---\nobreak. Cabrían en una placa doble, de ciento veintiocho. Los fundadores fabricaron algunas, y su mecanismo sabe cotejar las dos mitades a la vez, pero no sabe arrancar. Con una placa doble que supiera arrancar, las citas funcionarían igual que los carteles normales.
+
+---Pero no existe.
+
+---No existe. Así que propongo un arreglo: la placa doble, con el nicho, el talonario y una marca de «cita» en la mitad izquierda, y la posición del capítulo en la derecha. Los lectores arrancan siempre de la mitad izquierda, que es rápido. Si ven que la marca de cita está encendida ---cosa rara, porque las citas son raras---\nobreak, pasan a un cotejo de la placa doble entera, que es más lento y solo es \emph{lock-free}. La mayoría de los carteles no son citas, y para ellos el método sigue siendo sin esperas.
+
+---¿Y cómo se deshace el ticket arrancado de más cuando resulta que era una cita?
+
+Inés se encogió de hombros.
+
+---Buena pregunta. Todavía no lo he resuelto del todo. Es un esbozo, Siete. Apúntalo como esbozo.
+
+\escena
+A medianoche, Loew bajó en su silla flotante, con una manta sobre las rodillas, para hacer lo que él llamaba «la pregunta del viejo».
+
+---Querida, en los esquemas de basura diferida, los lectores pueden echar un \emph{vistazo} a un cristal sin apuntarse en ninguna hoja, porque el fundidor no funde nada mientras alguien esté mirando. Es muy barato. Con su método, ¿se puede echar un vistazo?
+
+---No ---dijo Inés---\nobreak. Con mi método, la única protección de un lector es su ticket. Si no arranca ticket, no hay nada que impida que el cristal se funda. No hay vistazos.
+
+---Y arrancar un ticket es escribir en el cartel. Así que cada lectura, aunque solo quiera mirar, escribe en el cartel.
+
+---Así es. Y si mil lectores leen a la vez el mismo cartel, mil manos tiran a la vez de la misma palanca, y el mecanismo las atiende de una en una. Los de la basura diferida pueden mirar sin tocar la palanca; yo no. Es el precio de fundir los cristales en el instante exacto en que llegan a cero. Lo que no se guarda, no se puede mirar sin permiso.
+
+---Me parece un precio justo ---dijo Loew---\nobreak. Pero conviene decirlo.
+
+---Lo diré.
+
+\escena
+Cerca de la una, uno de los técnicos del Cerebro, un hombre callado llamado Okafor, hizo la última pregunta de la noche.
+
+---Doctora, ¿cuántas cifras tienen las hojas de los cristales?
+
+---¿Por qué?
+
+---Porque cada cartel que anuncia un cristal le suma en su hoja un talonario entero. Si las hojas tienen treinta y dos cifras, como en las secciones antiguas, y el talonario es de medio millón\ldots{} ---Hizo la cuenta en su consola---\nobreak. Con poco más de ocho mil carteles apuntando a la vez al mismo cristal, la hoja se desborda. Y hay cristales, como el calendario oficial, que anuncian decenas de miles de carteles.
+
+Inés silbó.
+
+---Tiene usted razón. Las hojas tienen que ser de sesenta y cuatro cifras. Con sesenta y cuatro, harían falta del orden de treinta y cinco billones de carteles para desbordarlas, que es más que todos los que se fabricarán nunca. Hay que cambiar las hojas de las secciones antiguas antes de instalar nada. Apúntalo, Siete.
+
+---Y si alguien no pudiera cambiar sus hojas ---siguió Okafor---\nobreak, ¿podría usar un talonario pequeño?
+
+---Podría. Pero un talonario pequeño obliga a una zona roja pequeña, porque $C$ tiene que ser al menos el doble de $P$, y una zona roja pequeña obliga a un censo pequeño. Todo está atado.
+
+---Una cosa más ---dijo Okafor---\nobreak. En Marte fabrican mecanismos nuevos que usan las casillas altas de las placas para grabar una firma de autenticidad. Y en las Bóvedas nuevas de Ganímedes, los nichos ya tienen cincuenta y siete cifras.
+
+---Entonces allí las casillas libres son menos, y el talonario es más pequeño. Con siete casillas libres y tres de alineación, diez en total: un talonario de mil veintitrés, y un censo máximo de quinientos once lectores. ---Inés suspiró---\nobreak. Todo el método descansa en que sobren casillas en el cartel, Okafor. Aquí sobran. No en todas partes sobrarán. Apúntalo también, Siete. Las limitaciones se apuntan con la misma letra que los logros.
+
+\escena
+A las tres de la mañana, la sala de control se había vaciado. Solo quedaban Inés, Siete y el zumbido del Cerebro preparando el primer ensayo. Siete repasó sus notas.
+
+---Doctora, he contado. Tiene cinco cosas que sí y cinco que no.
+
+---¿Cuáles?
+
+---Sí: leer sin esperas, cambiar sin esperas, trocar sin esperas, carteles vacíos sin problemas y fichas débiles. No: cotejar con condiciones sin esperas, citas sin esperas, vistazos, más de $P$ lectores y casillas libres en todas partes.
+
+---Es un buen balance.
+
+---¿No le preocupan los cinco «no»?
+
+Inés se rio en voz baja.
+
+---Siete, cualquier solución que no tenga una lista de «no» es una solución que no ha mirado con suficiente atención. Las Tres Reglas nunca se cumplen gratis. Lo único que he conseguido es que el precio se pague en sitios donde se nota poco. ---Se levantó y se estiró---\nobreak. Despiértame cuando el Cerebro tenga números. Y si la llave gana, no me despiertes. Prefiero enterarme por la mañana, con café.

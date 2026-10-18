@@ -1,0 +1,35 @@
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[tinta] (current page.south west) rectangle (current page.north east);
+  % estrellas
+  \foreach \i in {1,...,140}{
+    \pgfmathsetmacro{\x}{rnd*14.8}
+    \pgfmathsetmacro{\y}{rnd*21}
+    \pgfmathsetmacro{\r}{0.004+rnd*0.014}
+    \fill[white,opacity=0.35+0.5*rnd] ($(current page.south west)+(\x,\y)$) circle (\r);
+  }
+  % Ceres
+  \shade[ball color=gris!70!ceres] ($(current page.south east)+(-2.2,4.4)$) circle (3.6);
+  \fill[tinta,opacity=0.55] ($(current page.south east)+(-0.6,5.2)$) circle (3.4);
+  % el cartel: 64 casillas
+  \begin{scope}[shift={($(current page.center)+(-5.6,-1.1)$)}]
+    \foreach \k in {0,...,15}{
+      \fill[oxido!85] (\k*0.175,0) rectangle ++(0.15,0.42);
+    }
+    \foreach \k in {16,...,63}{
+      \pgfmathsetmacro{\o}{mod(\k*7+3,5)<2 ? 0.95 : 0.35}
+      \fill[papel,opacity=\o] (\k*0.175,0) rectangle ++(0.15,0.42);
+    }
+    \node[anchor=north west,papel!70,font=\scriptsize\scshape] at (0,-0.12) {talonario};
+    \node[anchor=north east,papel!70,font=\scriptsize\scshape] at (11.2,-0.12) {nicho del cristal};
+  \end{scope}
+  \node[anchor=north,text width=12cm,align=center,papel] at ($(current page.north)+(0,-3.0)$)
+    {{\fontsize{30}{34}\selectfont\itshape La Primera Regla\\[2mm] del Archivo}};
+  \node[anchor=north,text width=11cm,align=center,oxido!40!papel] at ($(current page.north)+(0,-6.7)$)
+    {\large\scshape Una novela corta de Ceres};
+  \node[anchor=north,text width=10.5cm,align=center,papel!80] at ($(current page.center)+(0,-2.4)$)
+    {\small\itshape Un misterio con robots, carteles y tickets prepagados,\\ contado a la manera de los viejos maestros\\ de la ciencia ficción};
+  \node[anchor=south,text width=11cm,align=center,papel!65] at ($(current page.south)+(0,1.6)$)
+    {\footnotesize Inspirada en \emph{A Fast Wait-Free Solution to Read-Reclaim Races\\ in Reference Counting}, de I. G. de Wolff, D. Anderson,\\ G. K. Keller y A. Seletskiy (Euro-Par 2024)};
+\end{tikzpicture}
+\clearpage

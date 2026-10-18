@@ -1,0 +1,144 @@
+\chapter{La zona roja}
+
+\inicio{L}{a} primera idea de Siete fue la obvia, y la tuvo con la satisfacción de quien cree haber resuelto algo.
+
+---Cuando un lector arranque el último ticket, que recargue él el talonario. Quien deja el talonario vacío, lo vuelve a llenar.
+
+---Bien ---dijo Inés---\nobreak. Haz la prueba. Talonario con un ticket. Dos lectores.
+
+---El primero arranca el último ticket: uno pasa a cero. Ve que lo ha dejado vacío y se pone a recargar. Mientras tanto, el segundo\ldots
+
+Siete se detuvo.
+
+---El segundo arranca otro ticket ---dijo---\nobreak. De un talonario vacío.
+
+---¿Y qué marca el cartel?
+
+---Menos uno, doctora. Pero el mecanismo no conoce los números negativos. Es como el cuentakilómetros de un vehículo antiguo: si a cero le restas uno, da la vuelta. Las dieciséis casillas del talonario se encienden todas. El cartel marcaría sesenta y cinco mil quinientos treinta y cinco tickets.
+
+---Tickets fantasma ---dijo Inés---\nobreak. Que nadie ha apuntado en ninguna hoja. Todos los lectores que lleguen después se llevarán tickets que no valen nada, y en cuanto alguien cambie el cartel y reste los sobrantes, la hoja del cristal caerá a cero con media Bóveda leyéndolo. Dos gestos, Siete. Has necesitado dos gestos para que tu idea fracase.
+
+---Es humillante.
+
+---Es instructivo. La mayoría de las ideas fracasan así, en el segundo paso. Lo raro es encontrar una que aguante el tercero. ---Inés volvió a la pizarra---\nobreak. El problema es que el que recarga no es instantáneo. Mientras recarga, los demás siguen arrancando. ¿Cuántos pueden arrancar, como mucho, antes de que nadie haya terminado una recarga?
+
+Siete tardó un instante.
+
+---Tantos como lectores haya en el Archivo. Cada lector puede estar justo en el momento de arrancar.
+
+---El censo del Archivo admite como máximo sesenta y cinco mil quinientos treinta y seis lectores. Llamémosle $P$. Si todos arrancan a la vez, el talonario baja $P$ tickets de golpe. Así que no podemos esperar a que se vacíe: hay que recargar \emph{antes}, cuando todavía queda un colchón de $P$ tickets.
+
+Dibujó en la pizarra una franja roja en la parte baja del talonario.
+
+---La \emph{zona roja}. Cuando el talonario tiene $P$ tickets o menos, estamos en zona roja, y quien arranque un ticket allí queda obligado a recargar antes de marcharse. El talonario completo, $C$, tiene que ser mucho mayor que $P$; luego veremos cuánto exactamente.
+
+\escena
+---Ahora ---siguió Inés---\nobreak, ¿cómo se recarga?
+
+---Con el gesto de arrancar, pero al revés ---dijo Siete---\nobreak. En vez de restar un ticket, sumo los que faltan.
+
+---Eso harías si el cartel fuera tuyo. Pero mientras tú vas a la Bóveda a apuntar los tickets nuevos en la hoja, y vuelves, pueden haber pasado dos cosas. Dime cuáles.
+
+Siete se quedó mirando la pizarra.
+
+---Que Beto haya cambiado el cartel. Entonces ya no anuncia mi cristal, sino otro. Si sumo a ciegas, meto en el talonario de un cristal nuevo unos tickets que apunté en la hoja del viejo. El nuevo tendría tickets sin respaldo, y podría fundirse con lectores dentro. Y el viejo tendría apuntados unos tickets que no existen, y no se fundiría nunca. ---Pensó un poco más---\nobreak. Y que otro lector, que también entró en la zona roja, haya recargado antes que yo. Si sumo también, recargamos dos veces, y el talonario se desborda: las diecinueve casillas no dan para tanto.
+
+---Por eso la recarga no puede ser un gesto de arrancar. Tiene que ser un gesto de\ldots
+
+---\emph{Cotejar} ---dijo Siete---\nobreak. «Cambia el cartel solo si sigue siendo lo que yo vi.» Si el cartel sigue anunciando mi cristal con el número exacto de tickets que yo esperaba, añado los míos. Si ha cambiado lo más mínimo, el mecanismo se niega y me enseña lo que hay.
+
+---Exacto. Y antes de cotejar, ¿qué hay que hacer?
+
+---Apuntar en la hoja los tickets que voy a meter en el talonario. Para que no haya nunca tickets sin respaldo.
+
+---¿Y es seguro tocar la hoja de ese cristal? Hace un momento decíamos que tocar una hoja era peligroso, porque el cristal podía haberse fundido.
+
+---Es seguro, doctora ---dijo Siete, tras una brevísima pausa---\nobreak. Yo acabo de arrancar un ticket de ese cristal. Mientras tenga mi ticket, el cristal no puede fundirse. Mi propio ticket me protege mientras recargo.
+
+Inés sonrió, y escribió en la pizarra el procedimiento con letra pequeña y apretada:
+
+\begin{documento}[Procedimiento propuesto · recargar el talonario (primera versión)]
+Al arrancar un ticket, el lector ve cuántos quedaban, $w+1$. Si quedan $w < P$:
+\begin{enumerate}
+\item \emph{Reservar}: apuntar $C - w$ en la hoja del cristal.
+\item \emph{Cotejar}: «si el cartel sigue diciendo (mi cristal, $w$), que pase a decir (mi cristal, $w + C - w$)».
+\item Si el mecanismo acepta: la reserva ya está en el talonario. Terminado.
+\item Si se niega: \ldots
+\end{enumerate}
+\end{documento}
+
+---¿Por qué $C - w$ y no rellenar hasta $C$ sin más? ---preguntó Siete.
+
+---Porque así lo que entra en el talonario es, ticket por ticket, lo mismo que apuntaste en la hoja. Si el cotejo funciona, tu reserva se convierte en tickets. Si no funciona, la devuelves entera, y la cuenta queda como estaba. Y porque nunca desborda: el valor que esperas ver solo puede bajar, nunca subir, así que lo que pones nunca pasa de $C$.
+
+\escena
+Siete estudió el procedimiento con la atención con que otros robots estudian un circuito averiado. Al cabo de un rato dijo:
+
+---Doctora, el orden de los pasos uno y dos me parece mejorable. Si primero coteja y solo apunta en la hoja cuando el cotejo ha funcionado, se ahorra apuntar y desapuntar cuando el cotejo falla. Que, si hay muchos lectores, será a menudo.
+
+---Es una optimización razonable ---dijo Inés, con una voz tan neutra que Siete, de haber sido humano, habría sospechado algo---\nobreak. Pruébala.
+
+---Pruebo. Tres lectores. Talonario completo, $C=6$; zona roja, $P=3$. El cartel tiene el cristal A con tres tickets y la hoja de A marca tres. Beto prepara el cristal B. Un lector arranca un ticket: de tres a dos. Está en zona roja, tiene que recargar. Coteja primero: «si dice (A, 2), que diga (A, 6)». El mecanismo acepta. El cartel dice (A, 6). La hoja de A\ldots
+
+Se calló.
+
+---Sigue ---dijo Inés.
+
+---La hoja de A sigue marcando tres. Todavía no he apuntado mi reserva. En este instante, el cartel ofrece seis tickets y la hoja solo respalda tres, más el mío que está en mi mano. Si justo ahora Beto cambia el cartel\ldots{} Apunta seis en B, troca, se lleva «A, 6», y resta seis en la hoja de A. Que marcaba tres.
+
+---¿Y?
+
+---El cristal A se funde ---dijo Siete, muy bajo---\nobreak. Con mi ticket en la mano. Y cuando yo vuelva a apuntar mi reserva en la hoja de A, la apuntaré en la hoja de un cristal que ya no existe. He reconstruido la noche del incidente.
+
+Inés anotó la traza en un lado de la pizarra, por si alguien la necesitaba al día siguiente.
+
+\begin{pizarra}
+\begin{tabular}{@{}c l l c c@{}}
+\toprule
+& \textbf{Quién} & \textbf{Qué hace} & \textbf{Cartel} & \textbf{Hojas} \\
+\midrule
+0 & --- & estado inicial & (A, 3) & A=3 \\
+1 & Beto & prepara B (su pase) & (A, 3) & A=3, B=1 \\
+2 & Siete & arranca: 3 $\to$ 2, zona roja & (A, 2) & A=3, B=1 \\
+3 & Siete & coteja 2 $\to$ 6 sin reservar & (A, 6) & A=3, B=1 \\
+4 & Beto & apunta 6 en B & (A, 6) & A=3, B=7 \\
+5 & Beto & troca: se lleva (A, 6) & (B, 6) & A=3, B=7 \\
+6 & Beto & resta 6 en A $\to$ \textcolor{oxido}{fundido} & (B, 6) & A$\dagger$, B=7 \\
+\bottomrule
+\end{tabular}
+\end{pizarra}
+
+---Seis pasos ---dijo Inés---\nobreak. El orden «primero reservar, luego cotejar» no es un capricho, Siete. Es lo único que impide que, durante un instante, haya tickets en el cartel que ninguna hoja respalda. Y un instante es todo lo que necesita un archivero para colarse.
+
+---Retiro la optimización.
+
+---No la retires. Escríbela en tu memoria con una nota al lado: \emph{esto parecía más rápido y estrellaba naves}. Es la clase de nota que más se aprende.
+
+\escena
+Eran casi las cuatro. En el Gran Salón, al otro lado de la ventana, los robots del turno de noche empezaban a cruzar en sus rondas, y cada uno arrancaba algo invisible de un cartel que todavía no tenía talonario.
+
+---Nos falta el paso cuatro ---dijo Siete---\nobreak. ¿Qué hago si el cotejo se niega?
+
+---Dímelo tú. ¿Por qué puede negarse?
+
+---Por tres motivos. Uno: el cartel ya no anuncia mi cristal; Beto lo cambió. Entonces no hace falta recargar nada, porque el cartel tiene un talonario nuevo y lleno. Devuelvo mi reserva y me voy. Dos: otro lector arrancó un ticket entre medias, y el número que yo esperaba ya no está. Tres: otro lector recargó antes que yo.
+
+---¿Y qué haces en el caso dos?
+
+---Vuelvo a cotejar con el número nuevo, que será uno menos. La reserva sigue apuntada; no hace falta tocarla. ---Siete vaciló---\nobreak. ¿Y en el tres?
+
+---Esa es la pregunta. Cuéntame qué hacen los del contador partido. Loew lo dijo en el Consejo.
+
+---Reintentan hasta que su propio cotejo funcione, o hasta que vean el talonario otra vez fuera de la zona roja. Entonces se van.
+
+---Parece razonable, ¿verdad?
+
+---Parece razonable, doctora. ---Siete hizo una pausa larguísima, de casi un segundo---\nobreak. Pero usted no lo diría con ese tono si lo fuera.
+
+Inés se rio por primera vez en la noche. Luego se levantó, cogió la tiza y escribió en la pizarra:
+
+\begin{center}
+\emph{¿Qué pasa si nunca lo veo fuera de la zona roja?}
+\end{center}
+
+---Mañana te lo enseño con un experimento ---dijo---\nobreak. Ahora necesito café. Y tú necesitas encontrar a un robot con muy mala suerte.

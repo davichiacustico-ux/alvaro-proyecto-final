@@ -1,0 +1,42 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{default}
+\usepackage[spanish]{babel}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\title{Título de la presentación}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Diapositiva 2}
+\end{frame}
+
+\begin{frame}{Gráfico}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar, bar width=18pt,
+      width=0.8\textwidth, height=0.6\textheight,
+      symbolic x coords={A,B,C,D},
+      xtick=data, ymin=0,
+      ylabel={Valor},
+      nodes near coords,
+    ]
+      \addplot coordinates {(A,3) (B,5) (C,2) (D,4)};
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Diapositiva 4}
+\end{frame}
+
+\begin{frame}{Diapositiva 5}
+\end{frame}
+
+\end{document}

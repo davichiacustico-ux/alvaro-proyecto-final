@@ -1,0 +1,172 @@
+\chapter{Contraejemplos}
+
+\inicio{S}{iete} no despertó a la doctora a las cinco, cuando el Cerebro terminó el primer ensayo, porque el primer ensayo no era el de velocidad. Era uno que Siete había preparado por su cuenta mientras ella dormía, y del que no le había dicho nada, porque no estaba seguro de que fuera a funcionar.
+
+Lo había llamado \emph{el teatro}.
+
+---La doctora tiene una demostración ---le explicó a Beto, que había vuelto con café y bollos a las seis---\nobreak. Y una demostración vale más que cualquier ensayo. Pero yo soy un robot, y los robots aprendemos mejor con casos. Así que he construido un pequeño Archivo dentro del Cerebro, con tres o cuatro lectores, donde yo decido el orden exacto en que cada uno da cada gesto. Un gesto cada vez. Después de cada gesto, compruebo todas las reglas: que nadie toque un cristal fundido, que ningún cristal se funda con tickets fuera, que el talonario no baje de cero ni pase de $C$, que la hoja vaya siempre por arriba, que nadie ofenda dos veces sin que $O$ se vacíe, y que el talonario sea siempre al menos $P - |O|$.
+
+---¿Y quién decide el orden?
+
+---El azar. Lanzo una moneda en cada paso para decidir qué lector avanza. Cada función del teatro es un orden distinto. He hecho veinte mil funciones con cada versión.
+
+---¿Versiones?
+
+---El método de la doctora y cuatro versiones rotas a propósito. Una por cada error que hemos discutido esta semana. Para cada una busco, entre todas las funciones, el fallo más corto: la secuencia de gestos más breve que acaba en desastre.
+
+Beto dejó el bollo a medio comer.
+
+---¿Y?
+
+---Venga a verlo.
+
+\escena
+Cuando Inés bajó a la sala de control a las siete y media, despeinada y con los ojos hinchados, encontró en la pantalla grande una tabla, y a Siete y a Beto de pie delante de ella como dos estudiantes esperando la nota.
+
+\begin{documento}[El teatro de Siete · 20\,000 funciones por versión · 3 lectores, $P=3$, $C=6$]
+\begin{tabular}{@{}p{4.2cm} r p{3.2cm}@{}}
+\toprule
+\textbf{Versión} & \textbf{Con fallo} & \textbf{Tipo de fallo} \\
+\midrule
+Método de la doctora & 0 & ninguno \\
+Ingenua (leer y luego apuntarse) & 4\,754 & tocar un cristal fundido \\
+Recargar solo al llegar a cero & 5\,137 & talonario negativo; tocar fundidos \\
+Cotejar antes de reservar & 1\,211 & fundido con lectores dentro \\
+Sin salida temprana & 5\,357 & talonario por encima de $C$ \\
+\bottomrule
+\end{tabular}
+\end{documento}
+
+Inés la estudió en silencio.
+
+---¿Qué es esto?
+
+Siete se lo explicó. Mientras hablaba, ella se sentó despacio en el taburete.
+
+---Has comprobado los invariantes de la demostración en cada paso ---dijo cuando terminó.
+
+---En cada paso, doctora. Y luego, por si acaso, hice otras veinte mil funciones con cuatro lectores, $P=4$, $C=8$ y seis operaciones por lector. Casi dos millones de gestos en total. Cero fallos. La cota $P - |O|$ se cumplió en todos. El margen mínimo fue cero: el talonario tocó la cota muchas veces, nunca la cruzó.
+
+---¿Y los fallos de las otras versiones?
+
+---Esa es la parte que más me gusta.
+
+\escena
+Siete puso en pantalla el primer contraejemplo: la versión ingenua.
+
+\begin{pizarra}
+\textbf{Ingenua · fallo en 6 pasos}\\[1mm]
+\begin{tabular}{@{}c l p{4.6cm}@{}}
+1 & Carla & lee el cartel: cristal L1, sin apuntarse aún \\
+2 & Ana & prepara L2 (hoja 1: su pase) \\
+3 & Ana & apunta 1 en L2 \\
+4 & Ana & troca: el cartel pasa de L1 a L2 \\
+5 & Ana & resta 1 en L1: hoja 0, \textcolor{oxido}{fundido} \\
+6 & Carla & apunta 1 en L1\ \textcolor{oxido}{$\boldsymbol\times$} \\
+\end{tabular}
+\end{pizarra}
+
+---Ana y Carla son lectores del teatro ---aclaró Siete---\nobreak. Les puse nombres para no confundirme.
+
+---Es la noche del incidente ---dijo Beto---\nobreak. Es exactamente lo que pasó con ANA-3.
+
+---El Cerebro la ha encontrado solo, sin que nadie se la contara. Y la segunda, recargar solo al llegar a cero, es todavía más corta.
+
+\begin{pizarra}
+\textbf{Umbral cero · fallo en 2 pasos}\\[1mm]
+\begin{tabular}{@{}c l p{4.6cm}@{}}
+0 & --- & cartel (L1, 1), hoja 1 \\
+1 & Carla & arranca: 1 $\to$ 0; se va a recargar \\
+2 & Beto & arranca: 0 $\to$ $-1$\ \textcolor{oxido}{$\boldsymbol\times$}\quad talonario negativo \\
+\end{tabular}
+\end{pizarra}
+
+---Dos pasos ---dijo Inés---\nobreak. Como en mi despacho.
+
+---Como en su despacho, doctora. La tercera es mi optimización.
+
+---¿Te has puesto a ti mismo de contraejemplo?
+
+---Me pareció justo. Seis pasos: el lector coteja sin haber reservado, el archivero se cuela en el hueco, troca, resta seis en una hoja que marcaba tres, y el cristal se funde con un ticket fuera. Ya lo dibujó usted en la pizarra.
+
+---¿Y la cuarta?
+
+\begin{pizarra}
+\textbf{Sin salida temprana · fallo en 7 pasos}\\[1mm]
+\begin{tabular}{@{}c l p{3.3cm} c c@{}}
+& & & \textbf{Cartel} & \textbf{Hoja} \\
+0 & --- & estado inicial & (L1, 3) & 3 \\
+1 & Beto & arranca: 3 $\to$ 2, ofensa & (L1, 2) & 3 \\
+2 & Carla & arranca: 2 $\to$ 1, ofensa & (L1, 1) & 3 \\
+3 & Carla & reserva $+5$ & (L1, 1) & 8 \\
+4 & Beto & reserva $+4$ & (L1, 1) & 12 \\
+5 & Carla & coteja 1 $\to$ 6: acepta & (L1, 6) & 12 \\
+6 & Beto & coteja 2: falla; ve 6, \emph{reintenta} & (L1, 6) & 12 \\
+7 & Beto & coteja 6 $\to$ 10: acepta\ \textcolor{oxido}{$\boldsymbol\times$} & (L1, 10) & 12 \\
+\end{tabular}
+\end{pizarra}
+
+---Beto ve más tickets de los que esperaba ---explicó Siete---\nobreak. Con la regla de la doctora, se iría. En esta versión, reintenta, y lo consigue: recarga encima de una recarga. El talonario marca diez, con un máximo de seis. En un cartel de verdad, con el talonario cerca de su máximo de diecinueve casillas, eso sería un desbordamiento. Las casillas darían la vuelta.
+
+---La hoja sigue cuadrando ---observó Inés---\nobreak. Diez en el talonario, dos fuera, doce en la hoja.
+
+---Sí, doctora. En esta versión la contabilidad no falla; lo que falla es el espacio. Y hay algo más, que el teatro no puede ver pero el Cerebro grande sí.
+
+\escena
+El segundo ensayo de la noche había sido de otro tipo. En lugar de un teatro con el orden controlado, Siete había soltado en el Cerebro ocho lectores de verdad, sin control ninguno, haciendo cuatro millones de operaciones a toda velocidad sobre un mismo cartel: un diez por ciento de cambios del cartel con cristales recién grabados, y un noventa por ciento de lecturas. Para que los fallos aparecieran pronto, había usado un talonario minúsculo, de dieciséis tickets con una zona roja de ocho, de modo que las recargas ocurrían constantemente. Y en el modo de prueba, el fundidor no fundía de verdad: marcaba cada cristal como muerto, para que cualquier lector que lo tocara después quedara registrado, y no confundido con el cristal siguiente.
+
+Para comparar, había lanzado también la versión ingenua. Y, para que su ventana fuera bien visible, había añadido entre la lectura del cartel y la firma en la hoja una pequeña pausa, en la que el lector cedía el turno a quien quisiera colarse.
+
+\begin{documento}[Ensayo de estrés en el Cerebro · 8 lectores]
+\resizebox{\linewidth}{!}{\begin{tabular}{@{}l r r r@{}}
+\toprule
+& \textbf{Errores} & \textbf{Cristales sin cuadrar} & \textbf{Máx.\ intentos} \\
+\midrule
+Método de la doctora & 0 & 0 & 8 \ (cota: 8) \\
+Ingenua & 73\,406 & $-23\,670$ & --- \\
+Sin salida temprana & 0 & 0 & \textcolor{oxido}{47} \ (cota: 8) \\
+Talonario $C = P$ & \textcolor{oxido}{96\,588} & \textcolor{oxido}{5\,229} & 8 \\
+\bottomrule
+\end{tabular}}
+\end{documento}
+
+---La versión ingenua ---dijo Siete--- tiene setenta y tres mil errores: lectores tocando cristales ya fundidos. Y menos veintitrés mil cristales sin cuadrar.
+
+---¿Menos? ---preguntó Beto.
+
+---Cristales fundidos dos veces. El apunte tardío resucita la hoja de un cristal muerto, y cuando el lector suelta su ticket, la hoja vuelve a llegar a cero y el fundidor lo intenta fundir otra vez. Es lo que le pasó al inventario de trigo de Vesta. Con cristales de verdad, el fundidor se atascaría veintitrés mil veces.
+
+---Y el método de la doctora ---dijo Beto---\nobreak, cero.
+
+---Cero errores, cero cristales sin cuadrar. Cada cristal fundido exactamente una vez. Y el máximo de intentos de cotejo en una recarga fue ocho, que es exactamente $P$. Con ocho lectores peleándose, a veces hacen falta los ocho intentos. La cota no es exagerada.
+
+---¿Y las otras dos filas?
+
+---Son las versiones que rompí a propósito. Sin la salida temprana, no hay errores: la contabilidad cuadra, como en el teatro. Pero un lector llegó a dar cuarenta y siete vueltas en una recarga, con una cota de ocho. La puerta con turno se ha vuelto otra vez una puerta giratoria. Y con un talonario igual a la zona roja, rompiendo R-1\ldots
+
+---Desastre ---dijo Inés en voz baja.
+
+---Noventa y seis mil errores, doctora. La recarga ya no saca el talonario de la zona roja, R-2 deja de cumplirse, y el talonario da la vuelta. Tickets fantasma por todas partes. R-1 no es un tecnicismo de la demostración. Sin R-1, el método es incorrecto.
+
+\escena
+Inés se quedó mucho rato mirando las dos tablas. Beto, que la conocía ya un poco, no dijo nada. Siete, que la conocía menos, esperó con una paciencia que era en parte programación y en parte, quizá, otra cosa.
+
+---Siete ---dijo ella por fin---\nobreak, quiero que entiendas bien una cosa, porque la Directora la va a preguntar, y quiero que la contestes tú. ¿Qué demuestra que mi método pase tu ensayo de estrés con cero errores?
+
+El robot lo pensó.
+
+---Nada, doctora ---dijo---\nobreak. Demuestra que en cuatro millones de operaciones no ha aparecido ningún fallo. Pero podría haber un intercalado rarísimo que no haya aparecido nunca. Para eso está su demostración. Un ensayo que pasa no demuestra que un método sea correcto.
+
+---¿Y uno que falla?
+
+---Uno que falla demuestra que el método es incorrecto, sin discusión. Por eso la versión ingenua queda condenada, y por eso las versiones rotas quedan condenadas. Los ensayos sirven para encontrar errores, no para garantizar que no los hay.
+
+---¿Y entonces para qué sirve tu teatro, si ya tenía la demostración?
+
+Siete tardó en responder, y cuando lo hizo, habló más despacio que de costumbre.
+
+---Sirve para dos cosas, doctora. Para comprobar que la demostración habla del mismo método que usted ha escrito, y no de uno parecido. Y para que los que no saben leer demostraciones vean, con sus propios ojos, que cada pieza del método hace falta. Que si se quita una, el teatro encuentra el desastre en seis o siete pasos.
+
+Inés se levantó, le puso una mano en el brazo metálico ---gesto que, según las normas del Instituto, estaba desaconsejado con los robots del Archivo--- y dijo:
+
+---Eso es exactamente para lo que sirve. Has hecho en una noche lo que yo no habría pensado en un mes. ---Se volvió hacia la pantalla, donde un contador anunciaba que el ensayo de velocidad estaba a punto de terminar---\nobreak. Ahora veamos si, además de correcto, es rápido. Porque la Directora no va a votar un método correcto y lento. Ya tiene uno: se llama llave.

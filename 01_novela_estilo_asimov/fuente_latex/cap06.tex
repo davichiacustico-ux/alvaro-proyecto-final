@@ -1,0 +1,173 @@
+\chapter{El robot que daba vueltas}
+
+\inicio{E}{l} experimento se hizo a las siete de la mañana, en una esquina del Gran Salón que Beto Arce acordonó con cinta amarilla y mucha autoridad. Habían montado un cartel de pruebas con su talonario en las dieciséis casillas de la izquierda, y para que todo ocurriera deprisa, Inés había elegido números minúsculos: un talonario completo de ocho tickets, y una zona roja de cuatro.
+
+---Cuatro lectores como máximo ---explicó---\nobreak. Siete, tú serás el que recarga, y seguirás la regla del contador partido: solo te vas si tu cotejo funciona o si ves el talonario por encima de cuatro. Beto, tú y los aprendices haréis de mala suerte.
+
+Los aprendices eran tres robots jóvenes del turno de mañana, que se llamaban Ocho, Nueve y Diez, porque la imaginación del departamento de nombres había llegado hasta ahí. Beto les dio instrucciones en voz baja, como un entrenador antes de un partido.
+
+---Empezamos ---dijo Inés.
+
+Siete arrancó un ticket con el talonario en cuatro, lo dejó en tres, y entró en la zona roja. Apuntó su reserva en la hoja, se volvió hacia el cartel y preparó el cotejo: «si dice tres, que diga ocho».
+
+Antes de que pudiera ejecutarlo, Ocho arrancó un ticket. El talonario pasó a dos. El cotejo de Siete falló.
+
+---Veo dos ---dijo Siete---\nobreak. Está en zona roja. Reintento con dos.
+
+Nueve arrancó otro ticket. Uno. Falló.
+
+---Veo uno. Reintento.
+
+Entonces Diez, que también había entrado en la zona roja y tenía su propia reserva preparada, ejecutó su cotejo con éxito: el talonario saltó a siete. Pero antes de que Siete mirara, Ocho, Nueve y Beto arrancaron tres tickets seguidos, y el talonario volvió a cuatro.
+
+---Veo cuatro ---dijo Siete---\nobreak. Sigue en zona roja. Reintento con cuatro.
+
+Y así siguieron. Cada vez que Siete estaba a punto de cotejar, alguien se le adelantaba. De vez en cuando, alguno de los otros conseguía recargar; pero, siguiendo las instrucciones de Beto, los demás devolvían el talonario a la zona roja antes de que Siete lo viera. Al cabo de veinte minutos, el talonario había sido recargado once veces por otros, cada lector del experimento había hecho decenas de lecturas sin problemas, y Siete seguía de pie delante del cartel, cotejando.
+
+---Cuarenta y siete intentos ---dijo, con una voz que en un humano habría sonado cansada---\nobreak. Doctora, el Archivo funciona perfectamente. Todo el mundo lee. Todo el mundo recarga. Y yo no salgo de aquí.
+
+---Eso ---dijo Inés, levantando la voz para que la oyeran todos--- es lo que los antiguos llamaban \emph{lock-free}. El sistema avanza: cada vez que tu cotejo falla, es porque otro hizo algo. Pero tú, en concreto, podrías estar ahí hasta el fin de los tiempos. Es la puerta giratoria. Y la Segunda Regla dice que \emph{ningún} lector esperará sin término. No dice «casi ninguno».
+
+---Entonces el contador partido no cumple la Segunda Regla ---dijo Beto.
+
+---No la cumple. Por eso los de las colonias exteriores tienen robots que de vez en cuando «se cuelgan» y nadie sabe por qué. ---Inés quitó la cinta amarilla---\nobreak. Vamos a mi despacho. Siete, deja ya de cotejar.
+
+---Con mucho gusto, doctora.
+
+\escena
+En el despacho, Inés escribió en la pizarra la pregunta de la noche anterior y, debajo, la respuesta.
+
+---El error está en la condición de salida. Siete se iba solo si \emph{veía} el talonario alto. Pero no hace falta verlo alto. Basta con saber que \emph{ha estado} alto en algún momento desde que empezaste a recargar. Porque si ha estado alto, alguien recargó, y tu trabajo ya está hecho. Los que lo hayan vuelto a meter en la zona roja después son ahora los responsables de la siguiente recarga, no tú.
+
+---Pero ¿cómo voy a saber que ha estado alto, si no lo he visto?
+
+---Porque hay una regla sobre cómo puede cambiar el talonario. Siete, ¿de cuántas formas cambia?
+
+El robot las enumeró con los dedos.
+
+---Al arrancar un ticket, baja exactamente uno. Al cambiar el cartel, se pone en $C$. Al recargar con éxito, sube hasta\ldots{} $w + C - w$, donde $w$ era lo que esperaba el que recargó.
+
+---Si $C$ es lo bastante grande, ¿dónde queda el talonario después de una recarga?
+
+---Depende de lo que hubiera\ldots ---Siete hizo la cuenta---\nobreak. Lo que había es como mínimo cero. El que recarga entró en zona roja, así que dejó menos de $P$: $w$ es como mucho $P-1$. Lo que queda es como mínimo $0 + C - (P-1)$. Si $C$ es al menos $2P$, eso es al menos $P+1$.
+
+---Por encima de la zona roja. Siempre. ---Inés escribió dos líneas grandes en la pizarra:
+
+\begin{pizarra}
+\textsc{R-1.} El talonario completo tiene al menos el doble de tickets que lectores hay en el censo: $C \geq 2P$.
+
+\smallskip
+\textsc{R-2.} El talonario solo cambia de dos formas: \emph{baja de uno en uno}, o \emph{salta por encima de la zona roja}.
+\end{pizarra}
+
+---Ahora mira lo que pasa ---siguió Inés---\nobreak. Estás recargando. Esperabas ver tres. Tu cotejo falla y ves\ldots{} cinco. Más de lo que esperabas. ¿Cómo ha podido subir?
+
+---Por R-2, solo hay una forma de que suba: saltando por encima de la zona roja. Alguien recargó, o alguien cambió el cartel. Aunque ahora vea cinco, o dos, o lo que sea\ldots{} ---Siete se detuvo---\nobreak. No. Si veo dos, menos de tres, no sé si subió y volvió a bajar, o si simplemente alguien arrancó uno.
+
+---Correcto. Y en ese caso, ¿qué haces?
+
+---Reintento con dos. Pero si veo \emph{más} de lo que esperaba, aunque esté en zona roja, ya sé que alguien lo sacó de ella después de que yo empezara. Mi trabajo está hecho. Devuelvo mi reserva y me voy.
+
+---\emph{Salida temprana}. Y ahora cuenta cuántas veces puedes reintentar como mucho.
+
+Siete lo hizo en voz alta, y a medida que hablaba su voz fue ganando algo que Beto, que había entrado detrás de ellos, describiría más tarde como entusiasmo.
+
+---Empiezo esperando un número menor que $P$. Cada vez que reintento es porque vi un número \emph{menor} que el que esperaba; si fuera mayor, me iría. Así que los números que espero forman una cadena que siempre baja: tres, dos, uno\ldots{} Y nunca puede bajar de cero. Una cadena que siempre baja, que empieza por debajo de $P$ y no pasa de cero, tiene como mucho $P$ eslabones. Como mucho $P$ intentos, doctora. ¡Pase lo que pase!
+
+---Pase lo que pase con los demás. Eso es \emph{wait-free}. La puerta con turno.
+
+---Entonces, en el experimento, con la regla nueva\ldots
+
+---Con la regla nueva, en tu tercer intento habrías visto siete cuando esperabas uno, y te habrías ido. ---Inés escribió en la pizarra el procedimiento completo, en su versión final.
+
+\begin{documento}[Procedimiento definitivo · recargar el talonario]
+Al arrancar un ticket, el lector ve cuántos quedaban, $w+1$. Si quedan $w < P$:
+\begin{enumerate}
+\item Apuntar $C - w$ en la hoja del cristal. Esperar ver $w$.
+\item Cotejar: «si el cartel dice (mi cristal, lo esperado), que diga (mi cristal, lo esperado $+\, C - w$)».
+\item Si acepta: terminado.
+\item Si se niega y el cartel anuncia \emph{otro cristal}, o \emph{más tickets} de los esperados: salir.
+\item Si se niega y hay \emph{menos}: esperar ese número nuevo y volver al paso 2.
+\item Al salir sin éxito, restar en la hoja los $C - w$ reservados.
+\end{enumerate}
+\end{documento}
+
+\escena
+---Una cosa más ---dijo Siete---\nobreak. ¿Por qué $2P$? ¿No bastaría con un poco más que $P$?
+
+---Haz la cuenta con cuatro lectores y un talonario de seis.
+
+---El peor caso: alguien recarga esperando tres, el máximo por debajo de cuatro, y encuentra el talonario a cero. Queda $0 + 6 - 3 = 3$. Que está en zona roja. ---Siete lo pensó---\nobreak. Entonces R-2 deja de cumplirse. Una recarga podría dejar el talonario todavía en zona roja, y si veo más tickets de los que esperaba ya no sé si alguien lo sacó de la zona roja. La salida temprana deja de ser segura.
+
+---Con un talonario de ocho, el mismo peor caso deja cinco: fuera de la zona roja. $2P$ es lo justo.
+
+Beto, que había estado escuchando desde la puerta con una taza de café en cada mano, le tendió una a Inés.
+
+---Doctora, ¿podemos verlo con números de verdad? Yo me pierdo con las letras.
+
+---Con números de juguete ---dijo Inés---\nobreak. Que son los únicos de verdad que caben en una pizarra.
+
+\escena
+Lo hicieron con cuatro lectores, $P=4$, y un talonario de ocho, $C=8$. Beto hizo de Beto, Siete hizo de Siete, y los aprendices, que se habían colado en el despacho, hicieron de lecturas normales.
+
+\begin{pizarra}
+\begin{tabular}{@{}c p{5.1cm} c c c@{}}
+\toprule
+& \textbf{Qué pasa} & \textbf{Tickets} & \textbf{Hoja} & \textbf{Fuera} \\
+\midrule
+1 & Se cuelga el cartel con 8; hoja 8 & 8 & 8 & 0 \\
+2 & Cuatro lecturas normales: 8 $\to$ 4 & 4 & 8 & 4 \\
+3 & Siete arranca: 4 $\to$ 3. Zona roja; recargará con $w=3$ & 3 & 8 & 5 \\
+4 & Beto arranca: 3 $\to$ 2. Recargará con $w=2$ & 2 & 8 & 6 \\
+5 & Siete reserva $8-3=5$ & 2 & 13 & 6 \\
+6 & Beto reserva $8-2=6$ & 2 & 19 & 6 \\
+7 & Siete coteja 3 $\to$ 8: falla; ve 2, menos que 3: reintenta & 2 & 19 & 6 \\
+8 & Siete coteja 2 $\to$ 2+5 = 7: \textbf{acepta} & 7 & 19 & 6 \\
+9 & Beto coteja 2 $\to$ 8: falla; ve 7, más que 2: \textbf{sale} & 7 & 19 & 6 \\
+10 & Beto devuelve su reserva de 6 & 7 & 13 & 6 \\
+\bottomrule
+\end{tabular}
+\end{pizarra}
+
+---Al final ---dijo Inés---\nobreak, siete tickets en el talonario y seis fuera, en manos de lectores. Trece. Y la hoja marca\ldots
+
+---Trece ---dijo Beto---\nobreak. Cuadra.
+
+---Y durante los pasos cinco a nueve, la hoja estuvo por encima de lo que circulaba. Nunca por debajo. Mira el dibujo.
+
+\begin{center}
+\begin{tikzpicture}[x=8.4mm,y=2.6mm]
+  \fill[oxido!10] (0.5,0) rectangle (10.5,4);
+  \draw[gris!60,dashed] (0.5,4) -- (10.5,4) node[right,font=\tiny,gris]{$P=4$};
+  \node[font=\tiny,oxido,anchor=south west] at (0.55,0.1) {zona roja};
+  \draw[->,gris] (0.5,0) -- (10.7,0);
+  \draw[->,gris] (0.5,0) -- (0.5,21);
+  \foreach \y in {0,5,10,15,20}{\node[font=\tiny,gris,left] at (0.5,\y) {\y};}
+  \foreach \x in {1,...,10}{\node[font=\tiny,gris,below] at (\x,0) {\x};}
+  \draw[oxido,thick] (1,8) -- (5,8) -- (5,13) -- (6,13) -- (6,19) -- (10,19) -- (10,13);
+  \draw[ceres,thick] (1,8) -- (2,8) -- (2,4) -- (3,4) -- (3,3) -- (4,3) -- (4,2) -- (8,2) -- (8,7) -- (10,7);
+  \node[font=\tiny,oxido,anchor=south] at (8,19) {hoja};
+  \node[font=\tiny,ceres,anchor=south] at (9,7) {tickets en el cartel};
+  \node[font=\tiny,gris] at (5.5,-3.2) {paso};
+\end{tikzpicture}
+\end{center}
+
+---Los aprendices tienen una pregunta ---dijo Siete.
+
+Ocho dio un paso adelante, con la timidez de los robots recién activados.
+
+---Doctora, ¿y si el talonario sube y vuelve a bajar antes de que el que recarga lo mire? Por ejemplo: espera dos, alguien recarga a siete, otros bajan a uno, y él ve uno.
+
+---Entonces ve menos de lo que esperaba, así que no sale: reintenta con uno. Su recarga ya no hacía falta, pero no pasa nada malo. Si su cotejo funciona, el talonario sube a $1 + C - w$, que sigue sin pasar de $C$ porque lo que espera solo baja. Y el número de intentos sigue acotado, porque dos, uno\ldots{} sigue siendo una cadena que baja.
+
+Ocho pareció satisfecho, y volvió a su sitio.
+
+Inés miró el reloj: las nueve menos cuarto. El Consejo se reunía a las once.
+
+---Siete ---dijo---\nobreak, la Directora va a hacer la única pregunta que importa. No va a preguntar si funciona en la pizarra. Va a preguntar si puedo demostrar que el talonario \emph{nunca} se queda sin tickets. Nunca, con sesenta y cinco mil lectores intercalándose de todas las formas posibles.
+
+---¿Y puede?
+
+Inés miró la pizarra, llena de números de juguete, de flechas y de tazas de café vacías.
+
+---Creo que sí ---dijo---\nobreak. Pero voy a necesitar una palabra nueva. Y la palabra va a ser \emph{ofensa}.
