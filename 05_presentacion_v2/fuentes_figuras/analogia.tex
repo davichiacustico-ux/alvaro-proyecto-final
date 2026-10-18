@@ -1,0 +1,58 @@
+\documentclass[tikz,border=2pt]{standalone}
+\input{estilo}
+\begin{document}
+\begin{tikzpicture}[
+    card/.style={draw=azul!30, fill=suave, rounded corners=4pt, minimum width=6.6cm, minimum height=1.3cm},
+    hist/.style={font=\small\bfseries, text=azul, anchor=west},
+    pap/.style={font=\scriptsize, text=gris, anchor=west, align=left},
+    >=Stealth]
+  % título
+  \node[font=\large\bfseries, text=azul] at (6.9,4.15) {La Gran Biblioteca de la Base Luna \;$\leftrightarrow$\; el artículo};
+  % columnas de tarjetas
+  \foreach \col/\x in {0/0,1/7.2} {
+    \foreach \row/\y in {0/3.1,1/1.65,2/0.2,3/-1.25} {
+      \node[card, anchor=west] at (\x,\y) {};
+    }
+  }
+  % --- columna izquierda
+  \libro{(0.55,3.1)}{cLib}{A}
+  \node[hist] at (1.1,3.35) {Libro en un estante};
+  \node[pap]  at (1.1,2.9) {objeto con contador de referencias;\\ el número del estante es su dirección};
+
+  \begin{scope}[shift={(0.55,1.65)}]
+    \libro{(0,0)}{cLib}{A}\contador{(0.3,0.3)}{3}{acento}
+  \end{scope}
+  \node[hist] at (1.1,1.9) {Contador pegado al libro};
+  \node[pap]  at (1.1,1.45) {\emph{refcount}: cuántos lo están usando};
+
+  \trituradora{(0.55,0.25)}
+  \node[hist] at (1.1,0.45) {Trituradora};
+  \node[pap]  at (1.1,0.0) {liberar memoria cuando el contador llega a 0\\ (el estante puede reutilizarse)};
+
+  \letrero{(1.05,-1.25)}{estante A}{}
+  \node[hist] at (2.15,-1.0) {Letrero del salón};
+  \node[pap]  at (2.15,-1.45) {\emph{atomic shared pointer}:\\ variable mutable compartida};
+
+  % --- columna derecha
+  \begin{scope}[shift={(7.75,3.1)}]
+    \ticket{(-0.05,0.12)}{cFol}\ticket{(0.05,0)}{cFol}\ticket{(0.15,-0.12)}{cFol}
+  \end{scope}
+  \node[hist] at (8.4,3.35) {Talonario de tickets};
+  \node[pap]  at (8.4,2.9) {el \textbf{peso}: 16 bits libres del puntero,\\ ya sumados al contador (prepago)};
+
+  \robot{(7.75,1.6)}{cLib}{Tito}
+  \node[hist] at (8.4,1.9) {Tito arranca un ticket};
+  \node[pap]  at (8.4,1.45) {\textsc{load} = un \emph{fetch-and-add}:\\ leer y ``anotarse'' en un solo paso};
+
+  \persona{(7.75,0.15)}{cWil}{Pepe}
+  \node[hist] at (8.4,0.45) {Pepe cambia el letrero};
+  \node[pap]  at (8.4,0.0) {\textsc{store}: suma $C$ al nuevo, \emph{swap},\\ resta al viejo solo los tickets sobrantes};
+
+  \begin{scope}[shift={(7.75,-1.25)}]
+    \fill[acento!25] (-0.3,-0.3) rectangle (0.3,0.05); \draw[acento] (-0.3,-0.3) rectangle (0.3,0.3);
+    \node[font=\tiny\bfseries, acento] at (0,0.17) {$P$};
+  \end{scope}
+  \node[hist] at (8.4,-1.0) {Zona roja y ``falta''};
+  \node[pap]  at (8.4,-1.45) {peso $\le P$: quien arranca ahí debe recargar;\\ salida temprana si otro ya recargó};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,21 @@
+\documentclass[tikz,border=2pt]{standalone}
+\input{estilo}
+\begin{document}
+\begin{tikzpicture}[
+    tile/.style={draw=#1!60, fill=#1!8, rounded corners=6pt, minimum width=3.3cm, minimum height=3.0cm, line width=1pt}]
+  \foreach \i/\c/\big/\unit/\txt/\sub in {
+      0/cOur/47/{Mop/s}/throughput con 10 pilas{,}\\1\,\% updates (144 hilos)/$\approx$1{,}5$\times$ Anderson\\$\approx$7$\times$ Williams,
+      1/cLib/1{,}14/$\mu$s/latencia mediana de \textsc{load}\\con 56 hilos peleando/2{,}3$\times$ mejor que Anderson\\87$\times$ mejor que candados,
+      2/verde/0/objetos/basura acumulada\\(se libera al instante)/sin \emph{hazard pointers}\\ni épocas,
+      3/cAnd/1/instrucción/en un \textsc{load} típico\\(un \emph{fetch-and-add})/peor caso $O(P)$\\\textsc{store} en $O(1)$} {
+    \begin{scope}[shift={(\i*3.6,0)}]
+      \node[tile=\c] at (0,0) {};
+      \node[font=\fontsize{26}{28}\selectfont\bfseries, text=\c] at (0,0.75) {\big};
+      \node[font=\small\bfseries, text=\c!80!black] at (0,0.12) {\unit};
+      \node[font=\tiny, align=center, text=black!80] at (0,-0.5) {\txt};
+      \draw[\c!40] (-1.3,-0.88) -- (1.3,-0.88);
+      \node[font=\tiny, align=center, text=gris] at (0,-1.18) {\sub};
+    \end{scope}
+  }
+\end{tikzpicture}
+\end{document}

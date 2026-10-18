@@ -1,0 +1,307 @@
+\documentclass[tikz,border=0pt]{standalone}
+\input{estilo}
+\renewcommand{\iconscale}{1.6}
+\begin{document}
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 4512}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (3.25,3.65) {$\times$5};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\libro{(8.0,1.65)}{cLib}{A}
+\contador{(8.6,2.15)}{5}{cLib}
+\node[font=\scriptsize, cLib] at (8.0,2.4) {mapa};
+\robot{(1.0,1.95)}{cLib}{Tito}
+\persona{(6.3,4.35)}{gris}{Pepe}
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=white] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=white] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=white] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=white] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=white] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=white] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Con tickets: el letrero trae un talonario de \textbf{5} y el contador del mapa ya los incluye (5).};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 4512}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (2.75,3.65) {$\times$4};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\libro{(8.0,1.65)}{cLib}{A}
+\contador{(8.6,2.15)}{5}{cLib}
+\node[font=\scriptsize, cLib] at (8.0,2.4) {mapa};
+\robot{(1.0,1.95)}{cLib}{Tito}
+\ticket{(0.25,2.15)}{cFol}
+\node[font=\tiny, cFol!80!black] at (0.25,2.5) {4512};
+\persona{(6.3,4.35)}{gris}{Pepe}
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=white] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=white] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=white] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=white] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=white] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{1.} Tito \textbf{arranca} un ticket: en el mismo movimiento obtiene el estante \emph{y} su derecho a leer.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 7800}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (4.75,3.65) {$\times$8};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\ticket{(3.4,3.65)}{cFol}
+\ticket{(3.9,3.65)}{cFol}
+\ticket{(4.4,3.65)}{cFol}
+\libro{(9.8,1.65)}{cWil}{B}
+\contador{(10.4,2.15)}{8}{cWil}
+\libro{(8.0,1.65)}{cLib}{A}
+\contador{(8.6,2.15)}{5}{cLib}
+\node[font=\scriptsize, cLib] at (8.0,2.4) {mapa};
+\robot{(3.2,1.95)}{cLib}{Tito}
+\ticket{(2.45,2.15)}{cFol}
+\node[font=\tiny, cFol!80!black] at (2.45,2.5) {4512};
+\persona{(6.3,4.35)}{cWil}{Pepe}
+\node[draw=cWil, fill=white, rounded corners=3pt, font=\tiny\bfseries, text=cWil] at (7.9,4.75) {4512 + 4 tickets};
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=azul] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=white] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=white] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=white] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=white] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{2.} Pepe cambia el letrero de golpe (talonario nuevo de 8) y se queda con los \textbf{4} tickets sobrantes.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 7800}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (4.75,3.65) {$\times$8};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\ticket{(3.4,3.65)}{cFol}
+\ticket{(3.9,3.65)}{cFol}
+\ticket{(4.4,3.65)}{cFol}
+\libro{(9.8,1.65)}{cWil}{B}
+\contador{(10.4,2.15)}{8}{cWil}
+\libro{(8.0,1.65)}{cLib}{A}
+\contador{(8.6,2.15)}{1}{verde}
+\node[font=\scriptsize, cLib] at (8.0,2.4) {mapa};
+\robot{(4.6,1.95)}{cLib}{Tito}
+\ticket{(3.8499999999999996,2.15)}{cFol}
+\node[font=\tiny, cFol!80!black] at (3.8499999999999996,2.5) {4512};
+\persona{(6.3,4.35)}{cWil}{Pepe}
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=azul] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=azul] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=white] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=white] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=white] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{3.} Pepe resta solo los 4 sobrantes: el contador queda en \textbf{1}, que es el ticket de Tito.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 7800}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (4.75,3.65) {$\times$8};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\ticket{(3.4,3.65)}{cFol}
+\ticket{(3.9,3.65)}{cFol}
+\ticket{(4.4,3.65)}{cFol}
+\libro{(9.8,1.65)}{cWil}{B}
+\contador{(10.4,2.15)}{8}{cWil}
+\libro{(8.0,1.65)}{cLib}{A}
+\contador{(8.6,2.15)}{1}{verde}
+\node[font=\scriptsize, cLib] at (8.0,2.4) {mapa};
+\robot{(6.2,1.95)}{cLib}{Tito}
+\ticket{(5.45,2.15)}{cFol}
+\node[font=\tiny, cFol!80!black] at (5.45,2.5) {4512};
+\persona{(6.3,4.35)}{gris}{Pepe}
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=azul] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=azul] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=azul] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=white] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=white] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{4.} El mapa sigue vivo mientras Tito tenga su ticket: \textcolor{verde}{\textbf{no hay hueco}}.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 7800}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (4.75,3.65) {$\times$8};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\ticket{(3.4,3.65)}{cFol}
+\ticket{(3.9,3.65)}{cFol}
+\ticket{(4.4,3.65)}{cFol}
+\libro{(9.8,1.65)}{cWil}{B}
+\contador{(10.4,2.15)}{8}{cWil}
+\libro{(8.0,1.65)}{cLib}{A}
+\contador{(8.6,2.15)}{1}{verde}
+\node[font=\scriptsize, cLib] at (8.0,2.4) {mapa};
+\robot{(6.8,1.95)}{cLib}{Tito}
+\ticket{(6.05,2.15)}{cFol}
+\node[font=\tiny, cFol!80!black] at (6.05,2.5) {4512};
+\persona{(6.3,4.35)}{gris}{Pepe}
+\node[circle, fill=verde!20, draw=verde, line width=1pt, font=\scriptsize\bfseries, text=verde] at (5.6,2.5) {\checkmark};
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=azul] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=azul] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=azul] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=azul] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=white] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{5.} Tito llega y lee \textbf{el mapa correcto}.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 7800}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (4.75,3.65) {$\times$8};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\ticket{(3.4,3.65)}{cFol}
+\ticket{(3.9,3.65)}{cFol}
+\ticket{(4.4,3.65)}{cFol}
+\libro{(9.8,1.65)}{cWil}{B}
+\contador{(10.4,2.15)}{8}{cWil}
+\libro{(11.9,2.75)}{gris}{A}
+\draw[->, gris, thick, dashed] (8.4,2.1) to[bend left=20] (11.6,2.4);
+\robot{(6.8,1.95)}{cLib}{Tito}
+\persona{(6.3,4.35)}{gris}{Pepe}
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=azul] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=azul] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=azul] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=azul] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=azul] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=white] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{6.} Al terminar devuelve su ticket: el contador llega a 0 y \emph{ahora sí} va a la trituradora.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\node[font=\scriptsize\bfseries, gris] at (2.2,5.35) {Salón};
+\node[font=\scriptsize\bfseries, gris] at (8.9,5.35) {Estantería};
+\draw[gris!50, line width=1pt] (7.3,1.25) -- (10.5,1.25);
+\node[font=\tiny, gris] at (8.0,1.05) {4512};
+\node[font=\tiny, gris] at (9.8,1.05) {7800};
+\trituradora{(11.9,1.6)}
+\node[font=\tiny, gris] at (11.9,0.95) {trituradora};
+\letrero{(2.2,4.45)}{Mapa $\to$ 7800}{}
+\node[font=\scriptsize\bfseries, cFol!80!black, anchor=west] at (4.75,3.65) {$\times$8};
+\ticket{(0.9,3.65)}{cFol}
+\ticket{(1.4,3.65)}{cFol}
+\ticket{(1.9,3.65)}{cFol}
+\ticket{(2.4,3.65)}{cFol}
+\ticket{(2.9,3.65)}{cFol}
+\ticket{(3.4,3.65)}{cFol}
+\ticket{(3.9,3.65)}{cFol}
+\ticket{(4.4,3.65)}{cFol}
+\libro{(9.8,1.65)}{cWil}{B}
+\contador{(10.4,2.15)}{8}{cWil}
+\libro{(11.9,2.75)}{gris}{A}
+\draw[->, gris, thick, dashed] (8.4,2.1) to[bend left=20] (11.6,2.4);
+\robot{(6.8,1.95)}{cLib}{Tito}
+\persona{(6.3,4.35)}{gris}{Pepe}
+\draw[gris!60] (0.4,0.85) -- (12.4,0.85);
+\draw[azul, fill=azul] (0.4,0.85) circle (0.07);
+\draw[azul, fill=azul] (2.1142857142857143,0.85) circle (0.07);
+\draw[azul, fill=azul] (3.8285714285714283,0.85) circle (0.07);
+\draw[azul, fill=azul] (5.542857142857144,0.85) circle (0.07);
+\draw[azul, fill=azul] (7.257142857142857,0.85) circle (0.07);
+\draw[azul, fill=azul] (8.971428571428572,0.85) circle (0.07);
+\draw[azul, fill=azul] (10.685714285714287,0.85) circle (0.07);
+\draw[azul, fill=azul] (12.4,0.85) circle (0.07);
+\node[font=\small, text width=12.2cm, align=center, text=verde!60!black] at (6.4,0.35) {Leer y anotarse es \textbf{un solo paso} (\emph{fetch-and-add}): el mapa nunca se destruye con un lector en camino.};
+\end{tikzpicture}
+\end{document}

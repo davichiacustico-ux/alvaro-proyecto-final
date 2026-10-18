@@ -1,0 +1,310 @@
+\documentclass[tikz,border=0pt]{standalone}
+\input{estilo}
+\renewcommand{\iconscale}{1.6}
+\begin{document}
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\fill[cFol] (0.9,4.4) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {El letrero se cuelga con $C=8$ tickets (y el contador suma 8).};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Un lector arranca un ticket: el peso baja de uno en uno.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Otro lector\ldots};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Otro más\ldots};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {El peso llega a $P=4$: entramos en la \textcolor{acento}{zona roja}.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{Tito} arranca en zona roja (\emph{falta}): aparta 5 en el contador y debe recargar.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004) -- (6.9,2.0);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\fill[cWil] (6.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (6.9,2.0) {Pepe};
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {\textbf{Pepe} también comete una falta: aparta 6 y debe recargar.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004) -- (6.9,2.0) -- (7.9,2.0);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\fill[cWil] (6.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (6.9,2.0) {Pepe};
+\fill[cLib] (7.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (7.9,2.0) {Tito};
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {El CAS de Tito falla: ve 2, \emph{menos} de lo esperado (3) $\Rightarrow$ reintenta.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004) -- (6.9,2.0) -- (7.9,2.0) -- (8.9,4.0);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\fill[cWil] (6.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (6.9,2.0) {Pepe};
+\fill[cLib] (7.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (7.9,2.0) {Tito};
+\fill[cLib] (8.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (8.9,4.0) {Tito};
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Tito reintenta y su CAS funciona: $2 + 5 = 7$, el peso sale de la zona roja.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004) -- (6.9,2.0) -- (7.9,2.0) -- (8.9,4.0) -- (9.9,4.0);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\fill[cWil] (6.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (6.9,2.0) {Pepe};
+\fill[cLib] (7.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (7.9,2.0) {Tito};
+\fill[cLib] (8.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (8.9,4.0) {Tito};
+\fill[cWil] (9.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (9.9,4.0) {Pepe};
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {El CAS de Pepe falla y ve 7, \emph{más} de lo esperado: \textbf{salida temprana} (devuelve sus 6).};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004) -- (6.9,2.0) -- (7.9,2.0) -- (8.9,4.0) -- (9.9,4.0) -- (10.9,3.6000000000000005);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\fill[cWil] (6.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (6.9,2.0) {Pepe};
+\fill[cLib] (7.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (7.9,2.0) {Tito};
+\fill[cLib] (8.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (8.9,4.0) {Tito};
+\fill[cWil] (9.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (9.9,4.0) {Pepe};
+\fill[cFol] (10.9,3.6000000000000005) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Los lectores siguen leyendo con un solo \emph{fetch-and-add}\ldots};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\useasboundingbox[fill=white] (0,0) rectangle (12.8,5.6);
+\fill[acento!10] (0.9,1.2) rectangle (11.9,2.8);
+\node[font=\tiny, acento, anchor=south west] at (0.95,1.2) {zona roja};
+\draw[dashed, acento] (0.9,2.8) -- (11.9,2.8) node[right, font=\scriptsize] {$P$};
+\draw[dashed, gris] (0.9,4.4) -- (11.9,4.4) node[right, font=\scriptsize] {$C$};
+\draw[->] (0.9,1.2) -- (0.9,4.920000000000001) node[above, font=\scriptsize] {peso};
+\draw[->] (0.9,1.2) -- (12.5,1.2) node[right, font=\scriptsize] {tiempo};
+\node[left, font=\tiny] at (0.9,1.2) {0};
+\node[left, font=\tiny] at (0.9,2.0) {2};
+\node[left, font=\tiny] at (0.9,2.8) {4};
+\node[left, font=\tiny] at (0.9,3.6000000000000005) {6};
+\node[left, font=\tiny] at (0.9,4.4) {8};
+\draw[very thick, cFol] (0.9,4.4) -- (1.9,4.0) -- (2.9,3.6000000000000005) -- (3.9,3.2) -- (4.9,2.8) -- (5.9,2.4000000000000004) -- (6.9,2.0) -- (7.9,2.0) -- (8.9,4.0) -- (9.9,4.0) -- (10.9,3.6000000000000005) -- (11.9,3.6000000000000005);
+\fill[cFol] (0.9,4.4) circle (0.08);
+\fill[cFol] (1.9,4.0) circle (0.08);
+\fill[cFol] (2.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (3.9,3.2) circle (0.08);
+\fill[cFol] (4.9,2.8) circle (0.08);
+\fill[cLib] (5.9,2.4000000000000004) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (5.9,2.4000000000000004) {Tito};
+\fill[cWil] (6.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (6.9,2.0) {Pepe};
+\fill[cLib] (7.9,2.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (7.9,2.0) {Tito};
+\fill[cLib] (8.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cLib, above=2pt] at (8.9,4.0) {Tito};
+\fill[cWil] (9.9,4.0) circle (0.08);
+\node[font=\tiny\bfseries, text=cWil, above=2pt] at (9.9,4.0) {Pepe};
+\fill[cFol] (10.9,3.6000000000000005) circle (0.08);
+\fill[cFol] (11.9,3.6000000000000005) circle (0.08);
+\node[font=\small, text width=12.2cm, align=center, text=black] at (6.4,0.35) {Garantía: el peso nunca es negativo y cada recarga termina en $\le P$ intentos.};
+\end{tikzpicture}
+\end{document}
