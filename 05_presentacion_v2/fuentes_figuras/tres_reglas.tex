@@ -1,0 +1,34 @@
+\documentclass[tikz,border=2pt]{standalone}
+\input{estilo}
+\begin{document}
+\begin{tikzpicture}[
+    regla/.style={circle, draw=#1, line width=1.6pt, fill=#1!10, minimum size=2.1cm, align=center, font=\small\bfseries, text=#1!70!black},
+    met/.style={font=\scriptsize, anchor=east},
+    si/.style={circle, fill=verde, inner sep=0pt, minimum size=0.28cm},
+    no/.style={circle, fill=acento, inner sep=0pt, minimum size=0.28cm},
+    med/.style={circle, fill=amarillo, inner sep=0pt, minimum size=0.28cm}]
+  % Las tres reglas
+  \node[regla=cLib] (r1) at (0,0) {Regla 1\\[-1pt]\scriptsize\mdseries nunca liberar\\[-2pt]\scriptsize\mdseries lo que se lee};
+  \node[regla=cWil] (r2) at (3.3,0) {Regla 2\\[-1pt]\scriptsize\mdseries nadie espera\\[-2pt]\scriptsize\mdseries para siempre};
+  \node[regla=cAnd] (r3) at (6.6,0) {Regla 3\\[-1pt]\scriptsize\mdseries no guardar\\[-2pt]\scriptsize\mdseries basura};
+  \node[font=\tiny, gris, below=1pt of r1] {seguridad (\emph{no use-after-free})};
+  \node[font=\tiny, gris, below=1pt of r2] {progreso \emph{wait-free}};
+  \node[font=\tiny, gris, below=1pt of r3] {reclamación inmediata};
+  % Matriz de métodos
+  \foreach \m/\y/\a/\b/\c in {
+      Candados (libstdc++)/-2.0/si/no/si,
+      Basura diferida (HP{,} épocas)/-2.5/si/med/no,
+      Split rc (Williams{,} Folly)/-3.0/si/med/si,
+      Lectura ingenua/-3.5/no/si/si,
+      \textbf{Pesos + salida temprana}/-4.0/si/si/si} {
+    \node[met] at (-1.2,\y) {\m};
+    \node[\a] at (0,\y) {}; \node[\b] at (3.3,\y) {}; \node[\c] at (6.6,\y) {};
+  }
+  \draw[gris!40] (-4.6,-1.7) -- (7.3,-1.7);
+  \draw[rounded corners=3pt, draw=cOur, line width=1pt] (-4.6,-4.27) rectangle (7.3,-3.73);
+  % leyenda
+  \node[si] at (-4.3,-4.75) {}; \node[font=\tiny, anchor=west] at (-4.1,-4.75) {cumple};
+  \node[med] at (-3.0,-4.75) {}; \node[font=\tiny, anchor=west] at (-2.8,-4.75) {solo lock-free (puede reintentar sin fin)};
+  \node[no] at (0.9,-4.75) {}; \node[font=\tiny, anchor=west] at (1.1,-4.75) {no cumple};
+\end{tikzpicture}
+\end{document}

@@ -42,6 +42,15 @@ El PDF del paper y una explicación detallada (`explicacion-completa.pdf`) está
 
 - `main.tex`: Beamer 16:9 con 5 diapositivas vacías y un gráfico de barras de ejemplo (pgfplots) en la tercera.
 
+## 05_presentacion_v2 (versión mejorada, la más reciente)
+
+- Pedido: mejorar las diapositivas con infografías y animaciones dentro del PDF, e integrar las historias.
+- `main.tex` tiene 30 diapositivas y 53 páginas contando las capas. Usa `figuras/` (infografías: analogía Biblioteca ↔ paper, tres reglas, resultados en números) y `animaciones/` (la carrera con la receta de sopa, la solución con tickets y la recarga con salida temprana), que se reproducen con el paquete `animate`.
+- Diapositivas nuevas: "Una historia para empezar", "La carrera, paso a paso", "Tres reglas que hay que cumplir a la vez", "La misma idea, en la Gran Biblioteca de la Luna", "La solución, paso a paso", "Recarga con salida temprana", "Resultados en números" y "Material complementario".
+- `PROGRESO.md` registra los pasos; `pasos/` guarda versiones intermedias; `fuentes_figuras/` tiene las fuentes TikZ y `generar_animaciones.py`.
+- Para Overleaf: subir `Overleaf_presentacion_v2.zip` (New Project → Upload Project) y compilar con pdfLaTeX.
+- Codex no se pudo usar (es una herramienta de la PC de David); `PROMPTS_CODEX.md` trae prompts por si se quieren ilustraciones extra.
+
 ## Pendientes y siguientes pasos posibles
 
 - Subir la versión final de la presentación al proyecto de Overleaf y comprobar que compila en el plan gratuito.

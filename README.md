@@ -21,5 +21,9 @@ Repositorio con material divulgativo, narrativo, académico y experimental en to
   - `Presentacion_WaitFree_RC.pdf`: PDF compilado de la presentación (23 diapositivas, 47 pantallas con animaciones).
 - **`04_plantilla_diapositivas/`**: 
   - Plantilla limpia y mínima en Beamer con ejemplo gráfico para nuevas presentaciones.
+- **`05_presentacion_v2/`** (versión más reciente):
+  - `Presentacion_v2_con_animaciones.pdf`: 30 diapositivas con infografías y tres animaciones dentro del PDF (la carrera *read-reclaim*, la solución con tickets y la recarga con salida temprana), con los personajes de *El misterio del letrero*. Las animaciones se reproducen en Adobe Acrobat Reader, Okular o PDF-XChange; en navegadores y celulares solo se ve el primer cuadro.
+  - `main.tex` + `figuras/` + `animaciones/`: fuente Beamer (pdfLaTeX). `Overleaf_presentacion_v2.zip` se sube a Overleaf con *New Project → Upload Project*.
+  - `fuentes_figuras/`: fuentes TikZ de las infografías y `generar_animaciones.py`. `PROGRESO.md` y `pasos/` registran el proceso.
 - **`LEEME_CONTEXTO.md`**: Detalle cronológico y contextual del proyecto y consideraciones técnicas de compilación.
 - **`RECOMENDACION_EXPERIMENTOS.md`**: Guía y priorización de experimentos y benchmarks basados en el paper original.

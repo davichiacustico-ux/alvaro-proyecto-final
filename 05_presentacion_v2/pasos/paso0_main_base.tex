@@ -1,0 +1,626 @@
+\documentclass[aspectratio=169,11pt,xcolor=table]{beamer}
+% ------------------------------------------------------------------
+% Presentación: A Fast Wait-Free Solution to Read-Reclaim Races
+% in Reference Counting (de Wolff, Anderson, Keller, Seletskiy,
+% Euro-Par 2024). Compilar con pdfLaTeX.
+% Las animaciones son capas de Beamer: avanzan con cada clic
+% en modo presentación.
+% ------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-tabla,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{pifont}
+\usepackage{amsmath,amssymb}
+\usepackage[noend]{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing}
+
+% ---------- Estilo ----------
+\definecolor{azul}{HTML}{1F3A5F}
+\definecolor{acento}{HTML}{C0392B}
+\definecolor{suave}{HTML}{EEF2F7}
+\definecolor{gris}{HTML}{6B7280}
+\definecolor{cOur}{HTML}{D62728}
+\definecolor{cLib}{HTML}{1F77B4}
+\definecolor{cWil}{HTML}{2CA02C}
+\definecolor{cFol}{HTML}{FF7F0E}
+\definecolor{cAnd}{HTML}{9467BD}
+\definecolor{amarillo}{HTML}{F6C343}
+
+\usetheme{default}
+\usecolortheme{default}
+\setbeamercolor{structure}{fg=azul}
+\setbeamercolor{frametitle}{fg=white,bg=azul}
+\setbeamercolor{title}{fg=azul}
+\setbeamercolor{alerted text}{fg=acento}
+\setbeamercolor{block title}{fg=white,bg=azul}
+\setbeamercolor{block body}{bg=suave}
+\setbeamercolor{block title alerted}{fg=white,bg=acento}
+\setbeamercolor{block body alerted}{bg=acento!8}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.2ex,leftskip=1em]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}}
+\setbeamertemplate{footline}{%
+  \hfill{\color{gris}\scriptsize\insertframenumber/\inserttotalframenumber}\hspace*{1em}\vspace*{1ex}}
+
+\newcommand{\our}{\textcolor{cOur}{\textbf{Nuestro}}}
+
+% ---------- Gráficos en TikZ (rápidos de compilar) ----------
+% \ejes{ancho}{alto}{ymax}{lista de ticks y}: marco de un gráfico de throughput
+\newcommand{\ejes}[4]{%
+  \foreach \t in {#4} {\draw[gray!20] (1,\t) -- (216,\t); \node[left] at (1,\t) {\t};}
+  \foreach \t in {1,72,216} {\node[below] at (\t,0) {\t};}
+  \draw[dashed, gray!70] (144,0) -- (144,#3); \node[below] at (144,0) {144};
+  \draw (1,0) rectangle (216,#3);
+  \node[below=9pt] at (108,0) {Hilos};
+  \node[shift={(-0.65cm,0)}, rotate=90] at (1,#3/2) {Mop/s};}
+% \serie{color}{grosor}{coordenadas}
+\newcommand{\serie}[3]{\draw[#1, #2] plot[mark=*, mark size=1.1pt] coordinates {#3};}
+\newcommand{\xs}{1,18,36,54,72,108,144,180,216}
+
+\title{A Fast Wait-Free Solution to Read-Reclaim Races\\ in Reference Counting}
+\subtitle{Conteo de referencias concurrente, \emph{wait-free} y sin reclamación diferida}
+\author{Ivo Gabe de Wolff \and Daniel Anderson \and Gabriele K.\ Keller \and Aleksei Seletskiy}
+\institute{Euro-Par 2024 \textperiodcentered{} LNCS 14803, pp.\ 103--118\\[2pt]
+  {\scriptsize Presentación del artículo}}
+\date{}
+
+\begin{document}
+
+% ==================================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Contenido}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{enumerate}
+      \item Motivación y problema
+      \item Trabajo previo
+      \item Idea: conteo con pesos
+      \item Algoritmos \textsc{load} / \textsc{store}
+    \end{enumerate}
+    \column{0.48\textwidth}
+    \begin{enumerate}\setcounter{enumi}{4}
+      \item Aumentar el peso sin esperas
+      \item Corrección y complejidad
+      \item Extensiones y límites
+      \item Evaluación experimental
+    \end{enumerate}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Motivación}
+\begin{frame}{Motivación: conteo de referencias}
+  \begin{itemize}
+    \item Gestión de memoria segura y simple: cada objeto lleva un \alert{contador de referencias} (\emph{refcount}).
+    \item Muy usado: \texttt{shared\_ptr} en C++, \texttt{Arc} en Rust, implícito en Swift.
+    \item El caso difícil: una \alert{variable mutable compartida} que contiene un puntero con conteo:
+      \texttt{atomic<shared\_ptr<T>{}>}.
+    \item Operaciones: \textsc{load} (leer y obtener una referencia propia) y \textsc{store} (reemplazar el puntero).
+  \end{itemize}
+  \vspace{2mm}
+  \onslide<1->{
+  \begin{block}{Pregunta del artículo}
+    ¿Se puede implementar \texttt{atomic<shared\_ptr>} \alert{wait-free}, \alert{rápido} y \alert{sin sobrecoste de memoria}?
+  \end{block}}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{El problema: carrera \emph{read-reclaim}}
+  \centering
+  \resizebox{0.97\linewidth}{!}{%
+  \begin{tikzpicture}[
+      font=\small,
+      lane/.style={draw=gray!50, fill=gray!5, rounded corners, minimum height=9mm},
+      ev/.style={draw, rounded corners, fill=white, inner sep=3pt, font=\scriptsize, align=center},
+      >=Stealth]
+    % carriles
+    \node[lane, minimum width=13.2cm, anchor=west] (L) at (0,1.6) {};
+    \node[lane, minimum width=13.2cm, anchor=west] (W) at (0,0) {};
+    \node[anchor=east, font=\small\bfseries] at (-0.1,1.6) {Lector};
+    \node[anchor=east, font=\small\bfseries] at (-0.1,0) {Escritor};
+    \draw[->, gray] (0,-1.0) -- (13.2,-1.0) node[right, font=\scriptsize] {tiempo};
+
+    \onslide<2->{\node[ev, fill=cLib!10] (a) at (1.6,1.6) {\textbf{1.} lee la variable\\ obtiene ptr a $A$};}
+    \onslide<3->{\node[ev] (b) at (4.6,0) {\textbf{2.} \textsc{store}($B$)\\ la variable apunta a $B$};}
+    \onslide<4->{\node[ev] (c) at (7.9,0) {\textbf{3.} rc($A$)\,$-1$ = 0\\ \alert{libera $A$}};}
+    \onslide<5->{\node[ev, fill=acento!10, draw=acento] (d) at (11.4,1.6) {\textbf{4.} rc($A$)\,$+1$\\ \alert{use-after-free}};}
+
+    \onslide<2->{\draw[densely dotted, gray] (1.6,1.1) -- (1.6,-1.0);}
+    \onslide<5->{\draw[densely dotted, gray] (11.4,1.1) -- (11.4,-1.0);
+      \draw[decorate, decoration={brace, amplitude=5pt, mirror}, acento, thick]
+        (1.6,-1.25) -- node[below=5pt, font=\scriptsize] {ventana peligrosa: leer el puntero e incrementar el contador son \textbf{dos} pasos} (11.4,-1.25);}
+  \end{tikzpicture}}
+  \vspace{2mm}
+  \onslide<6->{\small No existe instrucción que lea la variable \emph{y} modifique el refcount de otro objeto a la vez (DCAS no existe en hardware actual).}
+\end{frame}
+
+% ==================================================================
+\section{Trabajo previo}
+\begin{frame}{Soluciones existentes}
+  \centering\small
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    \textbf{Enfoque} & \textbf{Wait-free} & \textbf{Sin sobrecoste de memoria} & \textbf{Hardware actual} \\
+    \midrule
+    Candados (libstdc++)              & \textcolor{acento}{\ding{55}}  & \checkmark & \checkmark \\
+    Lock-free clásico (Valois; Michael \& Scott) & \textcolor{acento}{\ding{55}} & \textcolor{acento}{\ding{55}} & \checkmark \\
+    Detlefs et al.\ (DCAS)            & \textcolor{acento}{\ding{55}}  & \checkmark & \textcolor{acento}{\ding{55}} \\
+    Reclamación diferida (HP, épocas, CDRC) & --- & \textcolor{acento}{\ding{55}} & \checkmark \\
+    Sundell                          & \checkmark & \checkmark & \checkmark\,\footnotesize($\Theta(P)$ por update) \\
+    \emph{Split reference count} (Williams, Folly) & \textcolor{acento}{\ding{55}} & \checkmark & \checkmark \\
+    \alert{\textbf{Este trabajo}} & \checkmark & \checkmark & \checkmark \\
+    \bottomrule
+  \end{tabular}
+  \vspace{3mm}
+
+  \onslide<1->{\small \textsc{store} en $O(1)$; \textsc{load} casi siempre $O(1)$ y $O(P)$ en el peor caso.}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Contribuciones}
+  \begin{enumerate}
+    \item Estrategia para \texttt{atomic<shared\_ptr>} \alert{wait-free} en \textsc{store}, \textsc{load} y \textsc{swap}, con hardware actual.
+    \item \textsc{load}: normalmente \alert{una sola instrucción atómica}; peor caso $O(P)$.\\
+              \textsc{store}: tiempo constante.
+    \item Nueva explicación del \emph{split reference count} como caso particular del \alert{conteo de referencias con pesos}.
+    \item Soporte para compare-and-swap y punteros \emph{aliased} (estos, solo lock-free).
+    \item Implementación en C++ y evaluación frente a cuatro alternativas.
+  \end{enumerate}
+\end{frame}
+
+% ==================================================================
+\section{Idea}
+\begin{frame}{Idea clave: conteo de referencias con pesos}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \begin{itemize}
+      \item Bevan; Watson \& Watson (1987).
+      \item Cada referencia tiene un \alert{peso} $\geq 1$.
+      \item Invariante: $\text{rc(obj)} = \sum \text{pesos}$.
+      \item \alert{Copiar} = partir el peso. ¡No toca el refcount!
+      \item Liberar = restar su peso al refcount.
+    \end{itemize}
+    \column{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\small, >=Stealth,
+        ref/.style={draw, fill=amarillo, rounded corners=2pt, minimum width=1.5cm, minimum height=6mm},
+        obj/.style={draw, fill=amarillo!40, minimum width=2.2cm, minimum height=8mm}]
+      \node[obj] (o) at (0,0) {rc = 10};
+      \only<1>{\node[ref] (x) at (0,2) {$X$: 10}; \draw[->] (x) -- (o);}
+      \only<2->{\node[ref] (x) at (-1.2,2) {$X$: 6}; \draw[->] (x) -- (o);
+               \node[ref, fill=cFol!60] (y) at (1.2,2) {$Y$: 4}; \draw[->] (y) -- (o);
+               \node[font=\scriptsize, gris] at (0,2.75) {6 + 4 = 10 \checkmark};}
+      \only<2->{\node[font=\scriptsize, acento, align=center] at (0,-1.1) {tirar $Y$ $\Rightarrow$ rc $-=4$};}
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Pesos en el puntero atómico compartido}
+  \begin{columns}[c]
+    \column{0.42\textwidth}
+    \begin{itemize}
+      \item Al crear el puntero atómico: peso $= C \gg P$ y se suma $C$ al refcount.
+      \item \textsc{load} \alert{resta 1 al peso} y entrega un \texttt{shared\_ptr} de peso 1.
+      \item El refcount del objeto \alert{no cambia}: ya estaba \emph{prepagado}.
+    \end{itemize}
+    \column{0.56\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize, >=Stealth,
+        hdr/.style={draw, fill=amarillo, minimum width=2.6cm, minimum height=5mm},
+        hdro/.style={draw, fill=cFol!70, minimum width=2.2cm, minimum height=5mm},
+        cell/.style={draw, minimum width=2.6cm, minimum height=5mm}]
+      \node[hdr] (ah) at (0,2.2) {Atomic shared pointer};
+      \node[cell, below=0pt of ah] (av) {\only<1>{104}\only<2->{\alert{103}}};
+      \node[hdr, minimum width=1.9cm] (s1) at (-2.4,1.0) {Shared pointer};
+      \node[hdr, minimum width=1.9cm] (s2) at (-2.4,-0.2) {Shared pointer};
+      \node[draw, fill=amarillo!40, minimum width=2.2cm, minimum height=5mm] (oh) at (1.4,0.2) {Objeto};
+      \node[draw, below=0pt of oh, minimum width=2.2cm, minimum height=5mm] (rc) {Refcount \textbf{106}};
+      \draw[->] (av.east) to[bend left=20] (oh.north east);
+      \draw[->] (s1.east) -- (oh.west);
+      \draw[->] (s2.east) -- (oh.west);
+      \onslide<2->{\node[hdro] (n) at (2.9,2.2) {nuevo \texttt{shared\_ptr}};
+        \draw[->, cFol, thick] (n.south) -- (oh.north);}
+      \node[gris, align=center] at (0,-1.4) {\only<1>{$104 + 1 + 1 = 106$}\only<2->{$103 + 1 + 1 + \alert{1} = 106$ \checkmark}};
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Empaquetar puntero y peso en una palabra}
+  \centering
+  \begin{tikzpicture}[font=\small, cell/.style={draw, minimum height=7mm}]
+    \node[anchor=east] at (-0.2,2) {Puntero};
+    \node[cell, minimum width=2.6cm, anchor=west] (z) at (0,2) {$0\ldots0$};
+    \node[cell, minimum width=7.2cm, anchor=west, fill=amarillo!60] at (z.east) (ad) {dirección (48 bits)};
+    \node[cell, minimum width=1.2cm, anchor=west] at (ad.east) {000};
+
+    \onslide<1->{
+    \node[anchor=east] at (-0.2,0.9) {Empaquetado};
+    \node[cell, minimum width=2.6cm, anchor=west, fill=cFol!70] (w) at (0,0.9) {peso (16)};
+    \node[cell, minimum width=7.2cm, anchor=west, fill=amarillo!60] at (w.east) (ad2) {dirección};
+    \node[cell, minimum width=1.2cm, anchor=west] at (ad2.east) {000};}
+
+    \onslide<1->{
+    \node[anchor=east] at (-0.2,-0.2) {Con bits de alineación};
+    \node[cell, minimum width=3.8cm, anchor=west, fill=cFol!70] (w3) at (0,-0.2) {peso (19)};
+    \node[cell, minimum width=7.2cm, anchor=west, fill=amarillo!60] at (w3.east) {dirección};}
+  \end{tikzpicture}
+  \vspace{4mm}
+  \begin{itemize}
+    \item CPUs de 64 bits usan 48 bits de dirección $\Rightarrow$ \alert{16 bits libres}.
+    \item Con los bits de alineación: $C = 2^{19}-1$. En los experimentos: $C = 2^{19}$, $P = 2^{16}$.
+    \item \textsc{load} = un único \alert{fetch-and-add} sobre la palabra: decrementa el peso y devuelve el puntero.
+  \end{itemize}
+\end{frame}
+
+% ==================================================================
+\section{Algoritmos}
+\begin{frame}{Algoritmo 1: \textsc{store} y \textsc{load}}
+  \begin{columns}[c]
+    \column{0.6\textwidth}
+    \footnotesize
+    \begin{algorithmic}[1]
+      \Function{store}{$this$, $new$}
+        \State \textcolor<2>{acento}{Incrementar rc($new$) en $C$}
+        \State \textcolor<2>{acento}{$(p, w) \gets$ \textproc{unpack}(\textproc{swap}($this$, \textproc{pack}($new$, $C$)))}
+        \State \textcolor<2>{acento}{Decrementar rc($p$) en $w$}
+      \EndFunction
+      \Statex
+      \Function{load}{$this$}
+        \State \textcolor<3>{acento}{$(p, w) \gets$ \textproc{unpack}(\textproc{fetch\_add}($this$, $-$\textproc{pack}(null, 1)))}
+        \If{\textcolor<4>{acento}{$w - 1 < P$}}
+          \State \Call{increase\_weight}{$this$, $p$, $w-1$}
+        \EndIf
+        \State \Return \texttt{shared\_ptr}($p$)
+      \EndFunction
+    \end{algorithmic}
+    \column{0.38\textwidth}
+    \small
+    \only<1>{Dos operaciones, cada una con \alert{una} instrucción atómica central.}
+    \only<2>{\textsc{store}: prepaga el objeto nuevo con $C$, lo instala con un \emph{swap} atómico y resta al viejo solo los $w$ tickets \emph{no usados}.}
+    \only<3>{\textsc{load}: leer y «apuntarse» es \alert{un solo fetch-and-add}: no hay ventana para la carrera.}
+    \only<4>{Si el peso cae por debajo de $P$, este hilo debe recargarlo antes de continuar.}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Aumentar el peso: requisitos}
+  \begin{block}{Problema}
+    Recargar el peso no puede ser un fetch-and-add: hay que comprobar que el puntero no cambió ni fue ya recargado $\Rightarrow$ bucle de compare-and-swap.
+  \end{block}
+  \vspace{2mm}
+  \onslide<1->{
+  \begin{block}{R-1}
+    $C \geq 2P$: el peso máximo es al menos el doble del número de hilos.
+  \end{block}}
+  \onslide<1->{
+  \begin{block}{R-2}
+    El peso solo cambia de dos formas: \alert{baja de uno en uno} o \alert{salta por encima de $P$}.
+  \end{block}}
+  \vspace{2mm}
+  \onslide<1->{\small\textbf{Consecuencia:} si un CAS falla porque el peso \emph{subió}, el peso estuvo por encima de $P$ $\Rightarrow$ otro hilo ya recargó $\Rightarrow$ \alert{salida temprana}.}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Algoritmo 2: \textsc{increase\_weight} (wait-free)}
+  \begin{columns}[c]
+    \column{0.62\textwidth}
+    \footnotesize
+    \begin{algorithmic}[1]
+      \Function{increase\_weight}{$value$, $ptr$, $weight$}
+        \State \textcolor<2>{acento}{Incrementar rc($ptr$) en $C - weight$}
+        \State $cur \gets weight$
+        \Loop
+          \State \textcolor<3>{acento}{$cas \gets$ \Call{CAS}{$value$, $(ptr, cur)$, $(ptr, cur + C - weight)$}}
+          \If{$cas.success$} \Return \EndIf
+          \State $(p', w') \gets$ \Call{unpack}{$cas.original$}
+          \If{\textcolor<4>{acento}{$p' \neq ptr$ \textbf{or} $w' > cur$}} \textbf{break} \EndIf
+          \State \textcolor<5>{acento}{$cur \gets w'$}
+        \EndLoop
+        \State Decrementar rc($ptr$) en $C - weight$
+      \EndFunction
+    \end{algorithmic}
+    \column{0.36\textwidth}
+    \small
+    \only<1>{Bucle CAS con \alert{tres} salidas posibles.}
+    \only<2>{\alert{Reservar antes de publicar}: nunca hay pesos en el puntero sin respaldo en el refcount.}
+    \only<3>{Instala el nuevo peso solo si nada cambió.}
+    \only<4>{\textbf{Salida temprana}: otro objeto, o el peso subió (R-2) $\Rightarrow$ ya recargado.}
+    \only<5>{Si el peso bajó, reintenta. Los valores esperados decrecen estrictamente: $\leq P$ iteraciones.}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{El peso a lo largo del tiempo}
+  \centering
+  \begin{tikzpicture}[>=Stealth, font=\small, x=1.15cm, y=1cm]
+    \fill[amarillo!25] (0,0) rectangle (10,2);
+    \draw[->] (0,0) -- (10.3,0) node[right] {tiempo};
+    \draw[->] (0,0) -- (0,4) node[above] {peso};
+    \draw[dashed, gris] (0,2) -- (10,2) node[right] {$P$};
+    \node[left] at (0,2) {$P$};
+    \node[left] at (0,0) {0};
+    % curva (por tramos)
+    \onslide<1->{\draw[very thick, cFol] (0,1.2) -- (1,0.9) -- (2,0.6) -- (2.6,0.4);}
+    \onslide<2->{\draw[very thick, cFol] (2.6,0.4) -- (2.6,3.1) -- (3.6,2.7) -- (4.6,2.2) -- (5.4,1.6) -- (6.0,1.4);}
+    \onslide<4->{\draw[very thick, cFol] (6.0,1.4) -- (6.4,1.3) -- (6.4,3.6) -- (7.6,3.3) -- (9,3.0) -- (10,2.8);}
+    % marcas
+    \onslide<1->{\draw[dashed] (2.2,0) -- (2.2,0.55); \node[below] at (2.2,0) {1};}
+    \onslide<2->{\draw[dashed] (3.6,0) -- (3.6,2.7); \node[below] at (3.6,0) {2};}
+    \onslide<3->{\draw[dashed] (5.7,0) -- (5.7,1.5); \node[below] at (5.7,0) {3};}
+    \onslide<4->{\draw[dashed] (7.6,0) -- (7.6,3.3); \node[below] at (7.6,0) {4};}
+  \end{tikzpicture}
+  \vspace{3mm}
+
+  \small
+  \only<1>{\textbf{1.} Un hilo hace \textsc{load}, deja el peso bajo $P$ y llama a \textsc{increase\_weight}.}
+  \only<2>{\textbf{2.} Otro hilo recarga primero: el peso supera $P$.}
+  \only<3>{\textbf{3.} Nuestro hilo ve un CAS fallido con peso \alert{mayor} al esperado (aunque bajo $P$) $\Rightarrow$ sale: ya hubo recarga.}
+  \only<4>{\textbf{4.} Los hilos que bajaron el peso después de 2 son responsables de la siguiente recarga.}
+\end{frame}
+
+% ==================================================================
+\section{Corrección}
+\begin{frame}{Corrección: el peso nunca es negativo}
+  \begin{itemize}
+    \item \textbf{Ofensa}: un hilo decrementa el peso cuando este es $\leq P$.
+    \item $O$: multiconjunto de hilos ofensores; se vacía cuando el peso supera $P$.
+  \end{itemize}
+  \vspace{1mm}
+  \onslide<2->{
+  \begin{block}{Invariante 1: cada hilo está en $O$ como mucho una vez}
+    Tras ofender, el hilo debe salir de \textsc{increase\_weight}; las tres salidas implican que el peso estuvo $> P$ $\Rightarrow$ $O$ se vació.
+  \end{block}}
+  \onslide<3->{
+  \begin{block}{Invariante 2: peso $\geq P - |O|$}
+    Por R-2, desde el último vaciado el peso solo baja de uno en uno, y cada bajada bajo $P$ añade un hilo a $O$.
+  \end{block}}
+  \onslide<3->{
+  \begin{alertblock}{Conclusión}
+    $|O| \leq P \;\Rightarrow\;$ peso $\geq P - P = 0$. \quad Con 1 o con $2^{16}$ hilos.
+  \end{alertblock}}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Complejidad}
+  \centering
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    \textbf{Operación} & \textbf{Progreso} & \textbf{Coste} \\
+    \midrule
+    \textsc{load}   & wait-free & casi siempre $O(1)$; peor caso $O(P)$ \\
+    \textsc{store}  & wait-free & $O(1)$ \\
+    \textsc{swap}   & wait-free & $O(1)$ \\
+    compare-and-swap & lock-free & --- \\
+    punteros \emph{aliased} & wait-free (rápido) / lock-free (fallback) & --- \\
+    \bottomrule
+  \end{tabular}
+  \vspace{4mm}
+  \begin{itemize}
+    \item En la práctica, el peor caso depende de los hilos que \alert{realmente} usan esa variable, no de $P$.
+    \item Con $C=2^{19}$ y $P=2^{16}$: $\approx 4{,}6\times10^5$ \textsc{load}s entre recargas.
+  \end{itemize}
+\end{frame}
+
+% ==================================================================
+\section{Extensiones}
+\begin{frame}{Extensiones y limitaciones}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \textbf{Extensiones}
+    \begin{itemize}
+      \item \textbf{null}: el peso puede desbordar sin alterar el puntero (bits altos).
+      \item \textbf{Punteros débiles}: ortogonales; mismo esquema.
+      \item \textbf{Compare-and-swap}: lock-free (falla si cambia el peso).
+      \item \textbf{Aliased}: palabra de 128 bits; ruta rápida optimista + fallback lock-free.
+    \end{itemize}
+    \column{0.48\textwidth}
+    \onslide<1->{\textbf{Limitaciones}
+    \begin{itemize}
+      \item Límite duro de $P$ hilos.
+      \item Requiere bits libres en los punteros (afecta tagging, LA57, ARM TBI/PAC).
+      \item Cada \textsc{load} escribe en la variable: contención en lecturas.
+      \item Sin \emph{snapshot pointers}.
+      \item Refcount de 64 bits recomendado.
+    \end{itemize}}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Evaluación}
+\begin{frame}{Configuración experimental}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \begin{itemize}
+      \item \textbf{Throughput}: 4$\times$ Intel Xeon E7-8867, 72 núcleos / \alert{144 hilos SMT}, 1\,TB.
+      \item \textbf{Latencia}: Intel Xeon w7-3465X, 28 núcleos / \alert{56 hilos}, 128\,GB.
+      \item Pila concurrente: $n$ pilas, $u$\,\% de actualizaciones.
+      \item $C = 2^{19}$, $P = 2^{16}$.
+    \end{itemize}
+    \column{0.44\textwidth}
+    \onslide<1->{
+    \textbf{Implementaciones comparadas}\\[1mm]
+    \small
+    \textcolor{cOur}{$\bullet$} \textbf{Nuestro} (wait-free)\\
+    \textcolor{cLib}{$\bullet$} \textbf{libstdc++} (candados)\\
+    \textcolor{cWil}{$\bullet$} \textbf{Williams} (split rc, lock-free)\\
+    \textcolor{cFol}{$\bullet$} \textbf{Folly} (split rc, lock-free)\\
+    \textcolor{cAnd}{$\bullet$} \textbf{Anderson} (hazard pointers;\\ \hspace*{0.8em}pequeño sobrecoste de memoria)}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Throughput: baja contención ($n=10$, $u=1\%$)}
+  \centering
+  \begin{tikzpicture}[font=\scriptsize, x=0.0381cm, y=0.0885cm]
+  \ejes{}{}{52}{0,10,20,30,40,50}
+  \serie{cLib}{thick}{(1,6.7)(18,4.3)(36,2.5)(54,1.8)(72,1.4)(108,1.2)(144,1)(180,0.8)(216,0.6)}
+  \serie{cWil}{thick}{(1,4)(18,14.5)(36,16)(54,16)(72,13.3)(108,9.5)(144,6.5)(180,6.6)(216,7)}
+  \serie{cFol}{thick}{(1,2)(18,10)(36,5.5)(54,4.3)(72,3.8)(108,3.3)(144,3)(180,2.8)(216,2.8)}
+  \onslide<2->{\serie{cAnd}{thick}{(1,5.5)(18,25.5)(36,31)(54,34.5)(72,36.8)(108,32.3)(144,30.4)(180,30.4)(216,30.4)}}
+  \onslide<3->{\serie{cOur}{very thick}{(1,9.3)(18,30)(36,38.5)(54,44)(72,47)(108,46)(144,46.5)(180,46)(216,46.5)}}
+  \onslide<3->{\draw[cOur, very thick] (225,49.4) -- ++(12,0) node[right, black] {Nuestro};}
+  \onslide<2->{\draw[cAnd, very thick] (225,45.5) -- ++(12,0) node[right, black] {Anderson};}
+  \draw[cWil, very thick] (225,41.6) -- ++(12,0) node[right, black] {Williams};
+  \draw[cFol, very thick] (225,37.7) -- ++(12,0) node[right, black] {Folly};
+  \draw[cLib, very thick] (225,33.8) -- ++(12,0) node[right, black] {libstdc++};
+\end{tikzpicture}
+
+  \small
+  \only<1>{Los métodos sin sobrecoste de memoria colapsan al crecer los hilos.}
+  \only<2>{Anderson (reclamación diferida) escala mejor\ldots}
+  \only<3>{\ldots pero el método propuesto llega a $\approx$\,\alert{47 Mop/s}, $\sim$1{,}5$\times$ Anderson y $\sim$7$\times$ Williams.}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Throughput: alta contención vs.\ muchas pilas}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize, x=0.0260cm, y=0.3130cm]
+  \ejes{}{}{11.5}{0,3,6,9}
+  \node[above, font=\small\bfseries] at (108,11.5) {$n=1$, $u=1\%$};
+  \serie{cLib}{thick}{(1,7)(18,0.5)(36,0.3)(54,0.2)(72,0.15)(108,0.1)(144,0.1)(180,0.1)(216,0.1)}
+  \serie{cWil}{thick}{(1,3.3)(18,2.2)(36,1.9)(54,1.6)(72,1.4)(108,1.05)(144,0.8)(180,0.8)(216,0.8)}
+  \serie{cFol}{thick}{(1,1.8)(18,0.7)(36,0.55)(54,0.45)(72,0.6)(108,0.45)(144,0.35)(180,0.35)(216,0.3)}
+  \serie{cAnd}{thick}{(1,5.4)(18,4.7)(36,6.1)(54,7.5)(72,8.3)(108,9.7)(144,10)(180,10.4)(216,10.3)}
+  \serie{cOur}{very thick}{(1,9.1)(18,6.6)(36,6.9)(54,6.3)(72,6.3)(108,6.1)(144,5.85)(180,6)(216,5.8)}
+\end{tikzpicture}
+    \column{0.5\textwidth}
+    \centering
+    \onslide<2->{
+    \begin{tikzpicture}[font=\scriptsize, x=0.0260cm, y=0.0257cm]
+  \ejes{}{}{140}{0,50,100}
+  \node[above, font=\small\bfseries] at (108,140) {$n=10^6$, $u=50\%$};
+  \serie{cLib}{thick}{(1,1)(18,18.5)(36,38)(54,55.5)(72,73.5)(108,94.5)(144,112.5)(180,108.5)(216,103)}
+  \serie{cWil}{thick}{(1,0.8)(18,15)(36,28)(54,40)(72,53)(108,65)(144,76)(180,75.5)(216,76)}
+  \serie{cFol}{thick}{(1,0.5)(18,10)(36,18)(54,26)(72,35)(108,43)(144,51.5)(180,50.5)(216,51.5)}
+  \serie{cAnd}{thick}{(1,1)(18,16)(36,29)(54,41.5)(72,53.5)(108,65.5)(144,76.5)(180,75)(216,72)}
+  \serie{cOur}{very thick}{(1,1)(18,19)(36,38.5)(54,57)(72,77)(108,104)(144,129)(180,128.5)(216,129)}
+\end{tikzpicture}}
+  \end{columns}
+  \small
+  {\scriptsize\textcolor{cOur}{\rule[0.5ex]{1.2em}{1.2pt}}~Nuestro\quad \textcolor{cAnd}{\rule[0.5ex]{1.2em}{1.2pt}}~Anderson\quad \textcolor{cWil}{\rule[0.5ex]{1.2em}{1.2pt}}~Williams\quad \textcolor{cFol}{\rule[0.5ex]{1.2em}{1.2pt}}~Folly\quad \textcolor{cLib}{\rule[0.5ex]{1.2em}{1.2pt}}~libstdc++}\par\smallskip
+  \only<1>{\textcolor{cOur}{\textbf{Nuestro}} es el mejor sin sobrecoste de memoria, pero con \alert{una sola pila} Anderson gana: todas las lecturas escriben en la misma palabra.}
+  \only<2>{Con \alert{$10^6$ pilas} (poca contención) gana \textcolor{cOur}{\textbf{Nuestro}}: $\approx$\,129 Mop/s frente a 113 (libstdc++) y 77 (Anderson).}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Latencia (mediana)}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize, x=1.9cm, y=0.062cm]
+  \foreach \v in {0,10,...,50} {\draw[gray!20] (0,\v) -- (3,\v); \node[left] at (0,\v) {\v};}
+  \draw (0,0) rectangle (3,55);
+  \node[above, font=\small\bfseries] at (1.5,55) {Sin contención ($p=1$), ns};
+  \node[below] at (0.5,0) {Load};
+  \fill[cOur] (0.14,0) rectangle (0.3,23);
+  \fill[cLib] (0.32,0) rectangle (0.48,29);
+  \fill[cFol] (0.5,0) rectangle (0.66,24);
+  \fill[cAnd] (0.68,0) rectangle (0.84,28);
+  \node[below] at (1.5,0) {Store};
+  \fill[cOur] (1.14,0) rectangle (1.3,33);
+  \fill[cLib] (1.32,0) rectangle (1.48,36);
+  \fill[cFol] (1.5,0) rectangle (1.66,37);
+  \fill[cAnd] (1.68,0) rectangle (1.84,28);
+  \node[below] at (2.5,0) {Store+reclaim};
+  \fill[cOur] (2.14,0) rectangle (2.3,44);
+  \fill[cLib] (2.32,0) rectangle (2.48,41);
+  \fill[cFol] (2.5,0) rectangle (2.66,49);
+  \fill[cAnd] (2.68,0) rectangle (2.84,44);
+  \fill[cOur] (0,69) rectangle ++(0.1,3) node[right, black, yshift=-3pt] {Nuestro};
+  \fill[cLib] (0.72,69) rectangle ++(0.1,3) node[right, black, yshift=-3pt] {libstdc++};
+  \fill[cFol] (1.7,69) rectangle ++(0.1,3) node[right, black, yshift=-3pt] {Folly};
+  \fill[cAnd] (2.3,69) rectangle ++(0.1,3) node[right, black, yshift=-3pt] {Anderson};
+\end{tikzpicture}
+    \column{0.5\textwidth}
+    \centering
+    \onslide<2->{
+    \begin{tikzpicture}[font=\scriptsize, x=1.9cm, y=1.05cm]
+  \foreach \v/\l in {0/1,1/10,2/100} {\draw[gray!20] (0,\v+0.3) -- (3,\v+0.3); \node[left] at (0,\v+0.3) {\l};}
+  \draw (0,0) rectangle (3,3.25);
+  \node[above, font=\small\bfseries] at (1.5,3.25) {Alta contención ($p=56$), $\mu$s, log};
+  \node[below] at (0.5,0) {Load};
+  \fill[cOur] (0.14,0) rectangle (0.3,{log10(1.14)+0.3});
+  \fill[cLib] (0.32,0) rectangle (0.48,{log10(99.7)+0.3});
+  \fill[cFol] (0.5,0) rectangle (0.66,{log10(11.6)+0.3});
+  \fill[cAnd] (0.68,0) rectangle (0.84,{log10(2.58)+0.3});
+  \node[below] at (1.5,0) {Store};
+  \fill[cOur] (1.14,0) rectangle (1.3,{log10(1.47)+0.3});
+  \fill[cLib] (1.32,0) rectangle (1.48,{log10(111)+0.3});
+  \fill[cFol] (1.5,0) rectangle (1.66,{log10(2.62)+0.3});
+  \fill[cAnd] (1.68,0) rectangle (1.84,{log10(2.84)+0.3});
+  \node[below] at (2.5,0) {Store+reclaim};
+  \fill[cOur] (2.14,0) rectangle (2.3,{log10(1.57)+0.3});
+  \fill[cLib] (2.32,0) rectangle (2.48,{log10(59.3)+0.3});
+  \fill[cFol] (2.5,0) rectangle (2.66,{log10(5.06)+0.3});
+  \fill[cAnd] (2.68,0) rectangle (2.84,{log10(1.25)+0.3});
+\end{tikzpicture}}
+  \end{columns}
+  \small
+  \only<1>{Sin contención todos son similares; \textsc{load} más rápido con \textcolor{cOur}{\textbf{Nuestro}} (23 ns).}
+  \only<2>{Con contención, \textsc{load} es \alert{$\sim$2{,}3$\times$} más rápido que Anderson y \alert{$\sim$87$\times$} que libstdc++. Store+reclaim: Anderson ligeramente mejor.}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Relación con el \emph{split reference count}}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+    \begin{itemize}
+      \item Split rc: un \alert{contador local} en el puntero que empieza en 0 y \emph{sube} con cada lectura.
+      \item Aquí: un \alert{peso} que empieza en $C$ y \emph{baja}.
+      \item Equivalencia: $\text{peso} = C - \text{contador local}$.
+      \item Diferencia clave: \alert{salida temprana} en \textsc{increase\_weight} $\Rightarrow$ wait-free.
+      \item Folly: refcount de 32 bits, $C=8192$, CAS en \textsc{load}; puede volverse bloqueante con $>C$ hilos.
+    \end{itemize}
+    \column{0.42\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize, x=0.55cm, y=0.38cm]
+      \draw (0,0) rectangle (8,8.5);
+      \node[below] at (4,-0.6) {lecturas};
+      \node[left] at (0,0) {0}; \node[left] at (0,8) {$C$};
+      \draw[gray!20] (0,8) -- (8,8);
+      \onslide<1->{\draw[thick, cLib] (0,0) -- (8,8); \node[cLib, anchor=east] at (7.8,6.0) {contador local};}
+      \onslide<2->{\draw[thick, cOur] (0,8) -- (8,0); \node[cOur, anchor=west] at (0.3,6.0) {peso};}
+      \onslide<2->{\node[align=center] at (4,1.1) {$\text{peso} + \text{contador} = C$};}
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+% ==================================================================
+\begin{frame}{Conclusiones}
+  \begin{itemize}
+    \item \texttt{atomic<shared\_ptr>} puede ser \alert{wait-free sin reclamación diferida}.
+    \item La carrera read-reclaim se elimina asignando un \alert{peso} al puntero atómico: leer y adquirir la referencia es una sola instrucción.
+    \item R-1 ($C\geq2P$) + R-2 + salida temprana $\Rightarrow$ recarga acotada por $P$.
+    \item En la práctica: \alert{mayor throughput} que las alternativas sin sobrecoste y \alert{latencia de \textsc{load} mínima}.
+    \item Límites: CAS solo lock-free, contención en lecturas de una misma variable, dependencia de bits libres.
+  \end{itemize}
+  \vspace{3mm}
+  \onslide<1->{\small\textcolor{gris}{Código y artefacto: Zenodo (doi:10.5281/zenodo.11775182) y github.com/ivogabe/wait-free-atomic-shared-pointer}}
+\end{frame}
+
+% ==================================================================
+\begin{frame}[plain]
+  \centering
+  \vspace*{20mm}
+  {\Huge\color{azul} ¡Gracias!}\\[6mm]
+  {\large Preguntas}
+\end{frame}
+
+\end{document}
